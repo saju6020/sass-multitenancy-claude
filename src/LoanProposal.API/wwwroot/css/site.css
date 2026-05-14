@@ -1,0 +1,43 @@
+body {
+    background: #f6f8fb;
+}
+
+.page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.metric-card {
+    border: 1px solid #dbe3ef;
+    border-radius: .5rem;
+    background: #fff;
+    padding: 1rem;
+}
+
+.metric-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.workspace-card {
+    border: 1px solid #dbe3ef;
+    border-radius: .5rem;
+    background: #fff;
+}
+
+.table thead th {
+    color: #49566a;
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.code-block {
+    max-height: 16rem;
+    overflow: auto;
+    white-space: pre-wrap;
+}

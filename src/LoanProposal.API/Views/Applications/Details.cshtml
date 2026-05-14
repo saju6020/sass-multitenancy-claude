@@ -1,0 +1,38 @@
+@model ApplicationDetailsViewModel
+@{
+    ViewData["Title"] = Model.ApplicationNumber;
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="h3 mb-1">@Model.ApplicationNumber</h1>
+        <p class="text-secondary mb-0">@Model.TenantName</p>
+    </div>
+    <a class="btn btn-outline-secondary" asp-controller="Applications" asp-action="Index">Back to Applications</a>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-4">
+        <div class="workspace-card p-3">
+            <h2 class="h6">Application Snapshot</h2>
+            <dl class="row mb-0">
+                <dt class="col-5">Status</dt>
+                <dd class="col-7">@Model.Status</dd>
+                <dt class="col-5">Amount</dt>
+                <dd class="col-7">@Model.RequestedAmount.ToString("N2")</dd>
+                <dt class="col-5">Tenure</dt>
+                <dd class="col-7">@Model.RequestedTenureMonths months</dd>
+                <dt class="col-5">Step</dt>
+                <dd class="col-7">@(string.IsNullOrWhiteSpace(Model.CurrentStepId) ? "Not assigned" : Model.CurrentStepId)</dd>
+                <dt class="col-5">Submitted</dt>
+                <dd class="col-7">@Model.SubmittedAt.ToLocalTime().ToString("g")</dd>
+            </dl>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="workspace-card p-3">
+            <h2 class="h6">Custom Data</h2>
+            <pre class="bg-light border rounded p-3 code-block">@Model.CustomDataJson</pre>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,270 @@
+@model TenantConfigurationViewModel
+@{
+    ViewData["Title"] = "Tenant Configuration";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="h3 mb-1">Tenant Configuration</h1>
+        <p class="text-secondary mb-0">Operational setup for fields, rules, workflows, and tenant policy values.</p>
+    </div>
+</div>
+
+<form method="get" class="workspace-card p-3 mb-4">
+    <div class="row g-3 align-items-end">
+        <div class="col-md-5 col-lg-4">
+            <label class="form-label">Tenant</label>
+            <select class="form-select" name="tenantId">
+                @foreach (var tenant in Model.Tenants)
+                {
+                    <option value="@tenant.Id" selected="@(tenant.Id == Model.SelectedTenantId)">@tenant.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2 d-grid">
+            <button class="btn btn-primary" type="submit">Load</button>
+        </div>
+    </div>
+</form>
+
+<ul class="nav nav-tabs" id="configurationTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="fields-tab" data-bs-toggle="tab" data-bs-target="#fields" type="button" role="tab">Custom Fields</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="rules-tab" data-bs-toggle="tab" data-bs-target="#rules" type="button" role="tab">Rules</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="workflows-tab" data-bs-toggle="tab" data-bs-target="#workflows" type="button" role="tab">Workflows</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab">Settings</button>
+    </li>
+</ul>
+
+<div class="tab-content workspace-card border-top-0 rounded-top-0">
+    <div class="tab-pane fade show active" id="fields" role="tabpanel" aria-labelledby="fields-tab">
+        <form class="p-3 border-bottom" asp-controller="Configuration" asp-action="SaveCustomField" method="post">
+            @Html.AntiForgeryToken()
+            <input name="TenantId" type="hidden" value="@Model.SelectedTenantId" />
+            <div class="row g-2 align-items-end">
+                <div class="col-md-2"><label class="form-label">Key</label><input name="FieldKey" class="form-control" placeholder="business_sector" /></div>
+                <div class="col-md-3"><label class="form-label">Label</label><input name="Label" class="form-control" placeholder="Business Sector" /></div>
+                <div class="col-md-2"><label class="form-label">Type</label><select name="FieldType" class="form-select">@foreach (CustomFieldType type in Enum.GetValues<CustomFieldType>()) { <option value="@type">@type</option> }</select></div>
+                <div class="col-md-1 form-check mt-4"><input name="IsRequired" value="true" class="form-check-input" type="checkbox" /><label class="form-check-label">Required</label></div>
+                <div class="col-md-1 form-check mt-4"><input name="IsSearchable" value="true" class="form-check-input" type="checkbox" /><label class="form-check-label">Search</label></div>
+                <div class="col-md-2 d-grid"><button class="btn btn-primary" type="submit">Create Field</button></div>
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Label</th>
+                        <th>Field Key</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Searchable</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var field in Model.CustomFields)
+                {
+                    <tr>
+                        <form asp-controller="Configuration" asp-action="SaveCustomField" method="post">
+                            @Html.AntiForgeryToken()
+                            <input name="Id" type="hidden" value="@field.Id" />
+                            <input name="TenantId" type="hidden" value="@field.TenantId" />
+                            <td><input name="Label" class="form-control form-control-sm" value="@field.Label" /></td>
+                            <td><input name="FieldKey" class="form-control form-control-sm" value="@field.FieldKey" /></td>
+                            <td><select name="FieldType" class="form-select form-select-sm">@foreach (CustomFieldType type in Enum.GetValues<CustomFieldType>()) { <option value="@type" selected="@(type == field.FieldType)">@type</option> }</select></td>
+                            <td><input name="IsRequired" value="true" type="checkbox" checked="@field.IsRequired" /></td>
+                            <td><input name="IsSearchable" value="true" type="checkbox" checked="@field.IsSearchable" /></td>
+                            <td><input name="IsActive" value="true" type="checkbox" checked="@field.IsActive" /></td>
+                            <td class="text-end"><button class="btn btn-sm btn-outline-primary" type="submit">Save</button></td>
+                        </form>
+                        <td class="text-end">
+                            <form asp-controller="Configuration" asp-action="DeleteCustomField" asp-route-id="@field.Id" method="post">
+                                @Html.AntiForgeryToken()
+                                <input name="tenantId" type="hidden" value="@field.TenantId" />
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="rules" role="tabpanel" aria-labelledby="rules-tab">
+        <form class="p-3 border-bottom" asp-controller="Configuration" asp-action="SaveRule" method="post">
+            @Html.AntiForgeryToken()
+            <input name="TenantId" type="hidden" value="@Model.SelectedTenantId" />
+            <div class="row g-2 align-items-end">
+                <div class="col-md-3"><label class="form-label">Name</label><input name="Name" class="form-control" /></div>
+                <div class="col-md-2"><label class="form-label">Category</label><select name="Category" class="form-select">@foreach (RuleCategory item in Enum.GetValues<RuleCategory>()) { <option value="@item">@item</option> }</select></div>
+                <div class="col-md-2"><label class="form-label">Outcome</label><select name="Outcome" class="form-select">@foreach (RuleOutcome item in Enum.GetValues<RuleOutcome>()) { <option value="@item">@item</option> }</select></div>
+                <div class="col-md-1"><label class="form-label">Priority</label><input name="Priority" class="form-control" value="100" /></div>
+                <div class="col-md-3"><label class="form-label">Expression</label><input name="Expression" class="form-control" value="{}" /></div>
+                <div class="col-md-1 d-grid"><button class="btn btn-primary" type="submit">Create</button></div>
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Rule</th>
+                        <th>Category</th>
+                        <th>Outcome</th>
+                        <th class="text-end">Priority</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var rule in Model.Rules)
+                {
+                    <tr>
+                        <form asp-controller="Configuration" asp-action="SaveRule" method="post">
+                            @Html.AntiForgeryToken()
+                            <input name="Id" type="hidden" value="@rule.Id" />
+                            <input name="TenantId" type="hidden" value="@rule.TenantId" />
+                            <td><input name="Name" class="form-control form-control-sm" value="@rule.Name" /><input name="Expression" class="form-control form-control-sm mt-1" value="@rule.Expression" /></td>
+                            <td><select name="Category" class="form-select form-select-sm">@foreach (RuleCategory item in Enum.GetValues<RuleCategory>()) { <option value="@item" selected="@(item == rule.Category)">@item</option> }</select></td>
+                            <td><select name="Outcome" class="form-select form-select-sm">@foreach (RuleOutcome item in Enum.GetValues<RuleOutcome>()) { <option value="@item" selected="@(item == rule.Outcome)">@item</option> }</select></td>
+                            <td class="text-end"><input name="Priority" class="form-control form-control-sm text-end" value="@rule.Priority" /></td>
+                            <td><input name="IsActive" value="true" type="checkbox" checked="@rule.IsActive" /></td>
+                            <td class="text-end"><button class="btn btn-sm btn-outline-primary" type="submit">Save</button></td>
+                        </form>
+                        <td class="text-end">
+                            <form asp-controller="Configuration" asp-action="DeleteRule" asp-route-id="@rule.Id" method="post">
+                                @Html.AntiForgeryToken()
+                                <input name="tenantId" type="hidden" value="@rule.TenantId" />
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="workflows" role="tabpanel" aria-labelledby="workflows-tab">
+        <form class="p-3 border-bottom" asp-controller="Configuration" asp-action="SaveWorkflow" method="post">
+            @Html.AntiForgeryToken()
+            <input name="TenantId" type="hidden" value="@Model.SelectedTenantId" />
+            <div class="row g-2">
+                <div class="col-md-4"><label class="form-label">Name</label><input name="Name" class="form-control" placeholder="Standard Approval" /></div>
+                <div class="col-md-3"><label class="form-label">Effective From</label><input name="EffectiveFrom" class="form-control" type="datetime-local" /></div>
+                <div class="col-md-2 form-check mt-4"><input name="IsActive" value="true" class="form-check-input" type="checkbox" /><label class="form-check-label">Active</label></div>
+                <div class="col-12"><label class="form-label">Steps JSON</label><textarea name="StepsJson" class="form-control" rows="5">@Model.WorkflowForm.StepsJson</textarea></div>
+                <div class="col-12"><label class="form-label">Routes JSON</label><textarea name="RoutingRulesJson" class="form-control" rows="4">@Model.WorkflowForm.RoutingRulesJson</textarea></div>
+                <div class="col-md-2 d-grid"><button class="btn btn-primary" type="submit">Create Workflow</button></div>
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Workflow</th>
+                        <th class="text-end">Version</th>
+                        <th class="text-end">Steps</th>
+                        <th class="text-end">Routes</th>
+                        <th>Effective From</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @if (!Model.Workflows.Any())
+                {
+                    <tr><td colspan="6" class="text-center text-secondary py-4">No workflows configured.</td></tr>
+                }
+                @foreach (var workflow in Model.Workflows)
+                {
+                    <tr>
+                        <td class="fw-semibold">@workflow.Name</td>
+                        <td class="text-end">@workflow.Version</td>
+                        <td class="text-end">@workflow.StepCount</td>
+                        <td class="text-end">@workflow.RoutingRuleCount</td>
+                        <td>@(workflow.EffectiveFrom?.ToLocalTime().ToString("g") ?? "When activated")</td>
+                        <td><span class="badge @(workflow.IsActive ? "text-bg-success" : "text-bg-warning")">@(workflow.IsActive ? "Active" : "Inactive")</span></td>
+                        <td class="text-end">
+                            <form class="mb-2" asp-controller="Configuration" asp-action="SaveWorkflow" method="post">
+                                @Html.AntiForgeryToken()
+                                <input name="Id" type="hidden" value="@workflow.Id" />
+                                <input name="TenantId" type="hidden" value="@workflow.TenantId" />
+                                <input name="Name" type="hidden" value="@workflow.Name" />
+                                <input name="IsActive" type="hidden" value="@(!workflow.IsActive)" />
+                                <input name="StepsJson" type="hidden" value="@workflow.StepsJson" />
+                                <input name="RoutingRulesJson" type="hidden" value="@workflow.RoutingRulesJson" />
+                                <button class="btn btn-sm btn-outline-primary" type="submit">Toggle</button>
+                            </form>
+                            <form asp-controller="Configuration" asp-action="DeleteWorkflow" asp-route-id="@workflow.Id" method="post">
+                                @Html.AntiForgeryToken()
+                                <input name="tenantId" type="hidden" value="@workflow.TenantId" />
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+        <form class="p-3 border-bottom" asp-controller="Configuration" asp-action="SaveSetting" method="post">
+            @Html.AntiForgeryToken()
+            <input name="TenantId" type="hidden" value="@Model.SelectedTenantId" />
+            <div class="row g-2 align-items-end">
+                <div class="col-md-3"><label class="form-label">Key</label><input name="Key" class="form-control" /></div>
+                <div class="col-md-3"><label class="form-label">Value</label><input name="Value" class="form-control" /></div>
+                <div class="col-md-2"><label class="form-label">Type</label><select name="ValueType" class="form-select">@foreach (ConfigValueType type in Enum.GetValues<ConfigValueType>()) { <option value="@type">@type</option> }</select></div>
+                <div class="col-md-3"><label class="form-label">Description</label><input name="Description" class="form-control" /></div>
+                <div class="col-md-1 d-grid"><button class="btn btn-primary" type="submit">Create</button></div>
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.Configuration)
+                {
+                    <tr>
+                        <form asp-controller="Configuration" asp-action="SaveSetting" method="post">
+                            @Html.AntiForgeryToken()
+                            <input name="Id" type="hidden" value="@item.Id" />
+                            <input name="TenantId" type="hidden" value="@item.TenantId" />
+                            <td><input name="Key" class="form-control form-control-sm" value="@item.Key" /></td>
+                            <td><input name="Value" class="form-control form-control-sm" value="@item.Value" /></td>
+                            <td><select name="ValueType" class="form-select form-select-sm">@foreach (ConfigValueType type in Enum.GetValues<ConfigValueType>()) { <option value="@type" selected="@(type == item.ValueType)">@type</option> }</select></td>
+                            <td><input name="Description" class="form-control form-control-sm" value="@item.Description" /></td>
+                            <td class="text-end"><button class="btn btn-sm btn-outline-primary" type="submit">Save</button></td>
+                        </form>
+                        <td class="text-end">
+                            <form asp-controller="Configuration" asp-action="DeleteSetting" asp-route-id="@item.Id" method="post">
+                                @Html.AntiForgeryToken()
+                                <input name="tenantId" type="hidden" value="@item.TenantId" />
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+@model TenantEditForm
+@{
+    ViewData["Title"] = "Edit Tenant";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="h3 mb-1">Edit Tenant</h1>
+        <p class="text-secondary mb-0">@Model.Slug</p>
+    </div>
+    <a class="btn btn-outline-secondary" asp-controller="Tenants" asp-action="Index">Back</a>
+</div>
+
+<form class="workspace-card p-3" asp-controller="Tenants" asp-action="Edit" asp-route-id="@Model.Id" method="post">
+    @Html.AntiForgeryToken()
+    <input asp-for="Id" type="hidden" />
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label asp-for="Slug" class="form-label"></label>
+            <input asp-for="Slug" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <label asp-for="Currency" class="form-label"></label>
+            <input asp-for="Currency" class="form-control" maxlength="3" />
+        </div>
+        <div class="col-md-3">
+            <label asp-for="Timezone" class="form-label"></label>
+            <input asp-for="Timezone" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <div class="form-check mt-4">
+                <input asp-for="IsActive" class="form-check-input" />
+                <label asp-for="IsActive" class="form-check-label">Active</label>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary mt-3" type="submit">Save Tenant</button>
+</form>

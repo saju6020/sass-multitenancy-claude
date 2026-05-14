@@ -1,0 +1,15 @@
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Application\bin\Debug\net8.0\LoanProposal.Application.deps.json
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Application\bin\Debug\net8.0\LoanProposal.Application.dll
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Application\bin\Debug\net8.0\LoanProposal.Application.pdb
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Application\bin\Debug\net8.0\LoanProposal.Core.dll
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Application\bin\Debug\net8.0\LoanProposal.Core.pdb
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Application\obj\Debug\net8.0\LoanProposal.Application.csproj.AssemblyReference.cache
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Application\obj\Debug\net8.0\LoanProposal.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Application\obj\Debug\net8.0\LoanProposal.Application.AssemblyInfoInputs.cache
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Application\obj\Debug\net8.0\LoanProposal.Application.AssemblyInfo.cs
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Application\obj\Debug\net8.0\LoanProposal.Application.csproj.CoreCompileInputs.cache
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Application\obj\Debug\net8.0\LoanProp.1F5CC7AB.Up2Date
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Application\obj\Debug\net8.0\LoanProposal.Application.dll
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Application\obj\Debug\net8.0\refint\LoanProposal.Application.dll
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Application\obj\Debug\net8.0\LoanProposal.Application.pdb
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Application\obj\Debug\net8.0\ref\LoanProposal.Application.dll

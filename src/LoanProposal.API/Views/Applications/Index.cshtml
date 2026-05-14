@@ -1,0 +1,157 @@
+@model ApplicationsIndexViewModel
+@{
+    ViewData["Title"] = "Loan Applications";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="h3 mb-1">Loan Applications</h1>
+        <p class="text-secondary mb-0">Review tenant-scoped applications and custom-field search results.</p>
+    </div>
+</div>
+
+<form method="get" class="workspace-card p-3 mb-4">
+    <div class="row g-3 align-items-end">
+        <div class="col-md-3">
+            <label class="form-label">Tenant</label>
+            <select class="form-select" name="tenantId">
+                @foreach (var tenant in Model.Tenants)
+                {
+                    <option value="@tenant.Id" selected="@(tenant.Id == Model.SelectedTenantId)">@tenant.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Status</label>
+            <select class="form-select" name="status">
+                <option value="">All statuses</option>
+                @foreach (LoanApplicationStatus status in Enum.GetValues<LoanApplicationStatus>())
+                {
+                    <option value="@status" selected="@(status == Model.Status)">@status</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Custom Field</label>
+            <select class="form-select" name="fieldKey">
+                <option value="">No custom search</option>
+                @foreach (var field in Model.SearchableFields)
+                {
+                    <option value="@field.FieldKey" selected="@(field.FieldKey == Model.SearchFieldKey)">@field.Label</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Value</label>
+            <input class="form-control" name="value" value="@Model.SearchValue" />
+        </div>
+        <div class="col-md-1 d-grid">
+            <button class="btn btn-primary" type="submit">Filter</button>
+        </div>
+    </div>
+</form>
+
+<form class="workspace-card p-3 mb-4" asp-controller="Applications" asp-action="Save" method="post">
+    @Html.AntiForgeryToken()
+    <h2 class="h5 mb-3">Create Loan Proposal</h2>
+    <input name="TenantId" type="hidden" value="@Model.SelectedTenantId" />
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label class="form-label">Workflow</label>
+            <select class="form-select" name="WorkflowDefinitionId">
+                @foreach (var workflow in Model.Workflows)
+                {
+                    <option value="@workflow.Id">@workflow.Name v@workflow.Version</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4"><label class="form-label">Applicant Name</label><input name="ApplicantName" class="form-control" /></div>
+        <div class="col-md-4"><label class="form-label">National ID</label><input name="NationalId" class="form-control" /></div>
+        <div class="col-md-3"><label class="form-label">Email</label><input name="ApplicantEmail" class="form-control" /></div>
+        <div class="col-md-3"><label class="form-label">Phone</label><input name="ApplicantPhone" class="form-control" /></div>
+        <div class="col-md-3"><label class="form-label">Date of Birth</label><input name="DateOfBirth" type="date" class="form-control" value="@DateTime.Today.AddYears(-30).ToString("yyyy-MM-dd")" /></div>
+        <div class="col-md-3"><label class="form-label">Annual Income</label><input name="AnnualIncome" type="number" step="0.01" class="form-control" /></div>
+        <div class="col-md-3"><label class="form-label">Credit Score</label><input name="CreditScore" type="number" class="form-control" value="650" /></div>
+        <div class="col-md-3"><label class="form-label">DTI Ratio</label><input name="DebtToIncomeRatio" type="number" step="0.01" class="form-control" value="0.35" /></div>
+        <div class="col-md-3"><label class="form-label">Relationship Years</label><input name="RelationshipYears" type="number" class="form-control" value="0" /></div>
+        <div class="col-md-3"><label class="form-label">Requested Amount</label><input name="RequestedAmount" type="number" step="0.01" class="form-control" /></div>
+        <div class="col-md-3"><label class="form-label">Tenure Months</label><input name="RequestedTenureMonths" type="number" class="form-control" value="12" /></div>
+        <div class="col-md-9"><label class="form-label">Custom Data JSON</label><input name="CustomDataJson" class="form-control" value="{}" /></div>
+    </div>
+    <button class="btn btn-primary mt-3" type="submit" @(Model.Workflows.Any() ? null : "disabled")>Create Proposal</button>
+    @if (!Model.Workflows.Any())
+    {
+        <span class="text-danger ms-2">Create a workflow for this tenant first.</span>
+    }
+</form>
+
+<div class="workspace-card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Application</th>
+                    <th>Tenant</th>
+                    <th class="text-end">Amount</th>
+                    <th class="text-end">Tenure</th>
+                    <th>Status</th>
+                    <th>Step</th>
+                    <th>Submitted</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (!Model.Applications.Any())
+            {
+                <tr><td colspan="8" class="text-center text-secondary py-4">No applications found.</td></tr>
+            }
+            @foreach (var app in Model.Applications)
+            {
+                <tr>
+                    <td><a asp-controller="Applications" asp-action="Details" asp-route-id="@app.Id">@app.ApplicationNumber</a></td>
+                    <td>@app.TenantName</td>
+                    <td class="text-end">@app.RequestedAmount.ToString("N2")</td>
+                    <td class="text-end">@app.RequestedTenureMonths months</td>
+                    <td><span class="badge text-bg-info">@app.Status</span></td>
+                    <td>@(string.IsNullOrWhiteSpace(app.CurrentStepId) ? "Not assigned" : app.CurrentStepId)</td>
+                    <td>@app.SubmittedAt.ToLocalTime().ToString("g")</td>
+                    <td class="text-end">
+                        @if (app.Status != LoanApplicationStatus.Approved && app.Status != LoanApplicationStatus.Rejected)
+                        {
+                            @if (app.CurrentStepId == "data_entry")
+                            {
+                                <form class="d-inline" asp-controller="Applications" asp-action="Advance" asp-route-id="@app.Id" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <input name="tenantId" type="hidden" value="@Model.SelectedTenantId" />
+                                    <input name="action" type="hidden" value="send_review" />
+                                    <button class="btn btn-sm btn-outline-primary" type="submit">Send Review</button>
+                                </form>
+                            }
+                            @if (app.CurrentStepId == "branch_review")
+                            {
+                                <form class="d-inline" asp-controller="Applications" asp-action="Advance" asp-route-id="@app.Id" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <input name="tenantId" type="hidden" value="@Model.SelectedTenantId" />
+                                    <input name="action" type="hidden" value="approve" />
+                                    <button class="btn btn-sm btn-outline-success" type="submit">Approve</button>
+                                </form>
+                                <form class="d-inline" asp-controller="Applications" asp-action="Advance" asp-route-id="@app.Id" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <input name="tenantId" type="hidden" value="@Model.SelectedTenantId" />
+                                    <input name="action" type="hidden" value="reject" />
+                                    <button class="btn btn-sm btn-outline-warning" type="submit">Reject</button>
+                                </form>
+                            }
+                        }
+                        <form asp-controller="Applications" asp-action="Delete" asp-route-id="@app.Id" method="post">
+                            @Html.AntiForgeryToken()
+                            <input name="tenantId" type="hidden" value="@Model.SelectedTenantId" />
+                            <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

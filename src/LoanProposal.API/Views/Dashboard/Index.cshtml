@@ -1,0 +1,80 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="h3 mb-1">Business Dashboard</h1>
+        <p class="text-secondary mb-0">Tenant health, configuration coverage, and loan activity.</p>
+    </div>
+    <a class="btn btn-primary" asp-controller="Tenants" asp-action="Index">Provision Tenant</a>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-xl-3">
+        <div class="metric-card">
+            <div class="text-secondary small">Tenants</div>
+            <div class="metric-value">@Model.TotalTenants</div>
+        </div>
+    </div>
+    <div class="col-6 col-xl-3">
+        <div class="metric-card">
+            <div class="text-secondary small">Applications</div>
+            <div class="metric-value">@Model.TotalApplications</div>
+        </div>
+    </div>
+    <div class="col-6 col-xl-3">
+        <div class="metric-card">
+            <div class="text-secondary small">Custom Fields</div>
+            <div class="metric-value">@Model.TotalCustomFields</div>
+        </div>
+    </div>
+    <div class="col-6 col-xl-3">
+        <div class="metric-card">
+            <div class="text-secondary small">Rules</div>
+            <div class="metric-value">@Model.TotalRules</div>
+        </div>
+    </div>
+</div>
+
+<div class="workspace-card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Tenant</th>
+                    <th>Currency</th>
+                    <th>Timezone</th>
+                    <th class="text-end">Applications</th>
+                    <th class="text-end">Fields</th>
+                    <th class="text-end">Rules</th>
+                    <th class="text-end">Workflows</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var tenant in Model.Tenants)
+            {
+                <tr>
+                    <td>
+                        <div class="fw-semibold">@tenant.Name</div>
+                        <div class="text-secondary small">@tenant.Slug</div>
+                    </td>
+                    <td>@tenant.Currency</td>
+                    <td>@tenant.Timezone</td>
+                    <td class="text-end">@tenant.ApplicationCount</td>
+                    <td class="text-end">@tenant.CustomFieldCount</td>
+                    <td class="text-end">@tenant.RuleCount</td>
+                    <td class="text-end">@tenant.WorkflowCount</td>
+                    <td>
+                        <span class="badge @(tenant.IsActive ? "text-bg-success" : "text-bg-secondary")">
+                            @(tenant.IsActive ? "Active" : "Inactive")
+                        </span>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
