@@ -573,6 +573,29 @@
         }
       }
     },
+    "/tenant-configuration/workflows/{id}": {
+      "get": {
+        "tags": [
+          "Configuration"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/tenant-configuration/workflows/save": {
       "post": {
         "tags": [

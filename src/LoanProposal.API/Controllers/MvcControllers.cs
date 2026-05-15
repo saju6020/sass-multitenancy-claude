@@ -285,6 +285,33 @@ public class ConfigurationController : Controller
         return RedirectToAction(nameof(Index), new { tenantId });
     }
 
+
+    [HttpGet("workflows/{id:guid}")]
+    public async Task<IActionResult> WorkflowDetails(Guid id, CancellationToken ct)
+    {
+        var tenants = await GetTenantOptionsAsync(_db, ct);
+        var tenantLookup = tenants.ToDictionary(t => t.Id, t => t.Name);
+        var workflow = await _db.WorkflowDefinitions.IgnoreQueryFilters().AsNoTracking()
+            .FirstOrDefaultAsync(w => w.Id == id, ct);
+        if (workflow is null) return NotFound();
+
+        return View(new WorkflowDetailsViewModel
+        {
+            Id = workflow.Id,
+            TenantId = workflow.TenantId,
+            TenantName = tenantLookup.GetValueOrDefault(workflow.TenantId, "Unknown tenant"),
+            Name = workflow.Name,
+            Version = workflow.Version,
+            IsActive = workflow.IsActive,
+            EffectiveFrom = workflow.EffectiveFrom,
+            CreatedAt = workflow.CreatedAt,
+            CreatedBy = workflow.CreatedBy,
+            Steps = workflow.GetSteps(),
+            RoutingRules = workflow.GetRoutingRules(),
+            StepsJson = PrettyJson(workflow.StepsJson),
+            RoutingRulesJson = PrettyJson(workflow.RoutingRulesJson)
+        });
+    }
     [HttpPost("workflows/save")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> SaveWorkflow(WorkflowForm form, CancellationToken ct)
@@ -664,6 +691,19 @@ internal static class MvcCrudHelpers
         }
     }
 
+
+    public static string PrettyJson(string json)
+    {
+        try
+        {
+            using var document = JsonDocument.Parse(json);
+            return JsonSerializer.Serialize(document.RootElement, new JsonSerializerOptions { WriteIndented = true });
+        }
+        catch (JsonException)
+        {
+            return json;
+        }
+    }
     public static void ValidateJson(string json, string label)
     {
         try

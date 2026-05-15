@@ -194,6 +194,9 @@
                         <td>@(workflow.EffectiveFrom?.ToLocalTime().ToString("g") ?? "When activated")</td>
                         <td><span class="badge @(workflow.IsActive ? "text-bg-success" : "text-bg-warning")">@(workflow.IsActive ? "Active" : "Inactive")</span></td>
                         <td class="text-end">
+                            <a class="btn btn-sm btn-outline-secondary mb-2" asp-controller="Configuration" asp-action="WorkflowDetails" asp-route-id="@workflow.Id" title="View workflow details" aria-label="View workflow details">
+                                <i class="bi bi-eye" aria-hidden="true"></i>
+                            </a>
                             <form class="mb-2" asp-controller="Configuration" asp-action="SaveWorkflow" method="post">
                                 @Html.AntiForgeryToken()
                                 <input name="Id" type="hidden" value="@workflow.Id" />

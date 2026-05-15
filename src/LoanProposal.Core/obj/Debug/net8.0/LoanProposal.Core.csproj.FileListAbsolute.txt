@@ -9,3 +9,14 @@ D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Core\obj\D
 D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Core\obj\Debug\net8.0\refint\LoanProposal.Core.dll
 D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Core\obj\Debug\net8.0\LoanProposal.Core.pdb
 D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude\src\LoanProposal.Core\obj\Debug\net8.0\ref\LoanProposal.Core.dll
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\LoanProposal.Core\bin\Debug\net8.0\LoanProposal.Core.deps.json
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\LoanProposal.Core\bin\Debug\net8.0\LoanProposal.Core.dll
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\LoanProposal.Core\bin\Debug\net8.0\LoanProposal.Core.pdb
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\LoanProposal.Core\obj\Debug\net8.0\LoanProposal.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\LoanProposal.Core\obj\Debug\net8.0\LoanProposal.Core.AssemblyInfoInputs.cache
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\LoanProposal.Core\obj\Debug\net8.0\LoanProposal.Core.AssemblyInfo.cs
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\LoanProposal.Core\obj\Debug\net8.0\LoanProposal.Core.csproj.CoreCompileInputs.cache
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\LoanProposal.Core\obj\Debug\net8.0\LoanProposal.Core.dll
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\LoanProposal.Core\obj\Debug\net8.0\refint\LoanProposal.Core.dll
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\LoanProposal.Core\obj\Debug\net8.0\LoanProposal.Core.pdb
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\LoanProposal.Core\obj\Debug\net8.0\ref\LoanProposal.Core.dll

@@ -733,6 +733,22 @@
   },
   {
     "ContainingType": "LoanProposal.API.Controllers.ConfigurationController",
+    "Method": "WorkflowDetails",
+    "RelativePath": "tenant-configuration/workflows/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LoanProposal.API.Controllers.ConfigurationController",
     "Method": "DeleteWorkflow",
     "RelativePath": "tenant-configuration/workflows/{id}/delete",
     "HttpMethod": "POST",

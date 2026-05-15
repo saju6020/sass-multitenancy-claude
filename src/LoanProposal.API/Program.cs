@@ -1,3 +1,4 @@
+using Elsa.Extensions;
 using LoanProposal.API.Middleware;
 using LoanProposal.Core.Entities;
 using LoanProposal.Core.Interfaces;
@@ -61,7 +62,8 @@ builder.Services.AddScoped<ITenantRepository, TenantRepository>(); // defined be
 // ── Domain Services ───────────────────────────────────────────────────────────
 builder.Services.AddScoped<IRuleEngine, JsonLogicRuleEngine>();
 builder.Services.AddScoped<INotificationService, LoggingNotificationService>();
-builder.Services.AddScoped<IWorkflowEngine, WorkflowEngine>();
+builder.Services.AddElsa();
+builder.Services.AddScoped<IWorkflowEngine, ElsaWorkflowEngine>();
 builder.Services.AddScoped<SlaTimerService>();
 
 // ── MediatR (CQRS) ────────────────────────────────────────────────────────────

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Core\\LoanProposal.Core.csproj": {}
+    "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Core\\LoanProposal.Core.csproj": {}
   },
   "projects": {
-    "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Core\\LoanProposal.Core.csproj": {
+    "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Core\\LoanProposal.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Core\\LoanProposal.Core.csproj",
+        "projectUniqueName": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Core\\LoanProposal.Core.csproj",
         "projectName": "LoanProposal.Core",
-        "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Core\\LoanProposal.Core.csproj",
+        "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Core\\LoanProposal.Core.csproj",
         "packagesPath": "C:\\Users\\shahjahan\\.nuget\\packages\\",
-        "outputPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Core\\obj\\",
+        "outputPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

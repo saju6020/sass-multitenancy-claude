@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xh4feyfMmS0=",
+  "dgSpecHash": "LgIeQCc4hFM=",
   "success": true,
-  "projectFilePath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Application\\LoanProposal.Application.csproj",
+  "projectFilePath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Application\\LoanProposal.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\shahjahan\\.nuget\\packages\\fluentvalidation\\11.9.0\\fluentvalidation.11.9.0.nupkg.sha512",
     "C:\\Users\\shahjahan\\.nuget\\packages\\mediatr\\12.2.0\\mediatr.12.2.0.nupkg.sha512",

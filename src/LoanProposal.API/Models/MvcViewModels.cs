@@ -128,6 +128,23 @@ public class WorkflowItemViewModel
     public string RoutingRulesJson { get; init; } = "[]";
 }
 
+
+public class WorkflowDetailsViewModel
+{
+    public Guid Id { get; init; }
+    public Guid TenantId { get; init; }
+    public string TenantName { get; init; } = string.Empty;
+    public string Name { get; init; } = string.Empty;
+    public int Version { get; init; }
+    public bool IsActive { get; init; }
+    public DateTime? EffectiveFrom { get; init; }
+    public DateTime CreatedAt { get; init; }
+    public string CreatedBy { get; init; } = string.Empty;
+    public IReadOnlyList<WorkflowStepDefinition> Steps { get; init; } = [];
+    public IReadOnlyList<RoutingRule> RoutingRules { get; init; } = [];
+    public string StepsJson { get; init; } = "[]";
+    public string RoutingRulesJson { get; init; } = "[]";
+}
 public class TenantListViewModel
 {
     public IReadOnlyList<TenantSummaryViewModel> Tenants { get; init; } = [];

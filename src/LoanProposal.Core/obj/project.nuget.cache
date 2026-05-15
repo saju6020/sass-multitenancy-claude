@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "q3qFO+ZBsn8=",
+  "dgSpecHash": "gT1Fthfcwck=",
   "success": true,
-  "projectFilePath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Core\\LoanProposal.Core.csproj",
+  "projectFilePath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Core\\LoanProposal.Core.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\shahjahan\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.18\\microsoft.windowsdesktop.app.ref.8.0.18.nupkg.sha512",
     "C:\\Users\\shahjahan\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.18\\microsoft.netcore.app.ref.8.0.18.nupkg.sha512",

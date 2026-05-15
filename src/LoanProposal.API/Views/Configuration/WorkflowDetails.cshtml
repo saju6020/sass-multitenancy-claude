@@ -1,0 +1,145 @@
+@model WorkflowDetailsViewModel
+@{
+    ViewData["Title"] = "Workflow Details";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="h3 mb-1">@Model.Name</h1>
+        <p class="text-secondary mb-0">@Model.TenantName workflow configuration and routing details.</p>
+    </div>
+    <a class="btn btn-outline-secondary" asp-controller="Configuration" asp-action="Index" asp-route-tenantId="@Model.TenantId" asp-fragment="workflows">
+        Back to Workflows
+    </a>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="text-secondary small text-uppercase">Version</div>
+            <div class="metric-value">@Model.Version</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="text-secondary small text-uppercase">Steps</div>
+            <div class="metric-value">@Model.Steps.Count</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="text-secondary small text-uppercase">Routes</div>
+            <div class="metric-value">@Model.RoutingRules.Count</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="text-secondary small text-uppercase">Status</div>
+            <div class="mt-2"><span class="badge @(Model.IsActive ? "text-bg-success" : "text-bg-warning")">@(Model.IsActive ? "Active" : "Inactive")</span></div>
+        </div>
+    </div>
+</div>
+
+<div class="workspace-card p-3 mb-4">
+    <div class="row g-3">
+        <div class="col-md-3">
+            <div class="text-secondary small">Effective From</div>
+            <div class="fw-semibold">@(Model.EffectiveFrom?.ToLocalTime().ToString("g") ?? "When activated")</div>
+        </div>
+        <div class="col-md-3">
+            <div class="text-secondary small">Created At</div>
+            <div class="fw-semibold">@Model.CreatedAt.ToLocalTime().ToString("g")</div>
+        </div>
+        <div class="col-md-3">
+            <div class="text-secondary small">Created By</div>
+            <div class="fw-semibold">@Model.CreatedBy</div>
+        </div>
+        <div class="col-md-3">
+            <div class="text-secondary small">Tenant</div>
+            <div class="fw-semibold">@Model.TenantName</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-xl-7">
+        <div class="workspace-card">
+            <div class="p-3 border-bottom">
+                <h2 class="h5 mb-0">Steps</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Step</th>
+                            <th>Type</th>
+                            <th>Assignee</th>
+                            <th class="text-end">SLA</th>
+                            <th>Next</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var step in Model.Steps)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">@step.Name</div>
+                                <div class="text-secondary small">@step.StepId</div>
+                            </td>
+                            <td>@step.StepType</td>
+                            <td>@(step.AssigneeRoleCode ?? "-")</td>
+                            <td class="text-end">@(step.SlaHours?.ToString() ?? "-")</td>
+                            <td>@(step.NextStepIds.Any() ? string.Join(", ", step.NextStepIds) : "-")</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-5">
+        <div class="workspace-card">
+            <div class="p-3 border-bottom">
+                <h2 class="h5 mb-0">Routing</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Condition</th>
+                            <th class="text-end">Priority</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var route in Model.RoutingRules)
+                    {
+                        <tr>
+                            <td>@route.FromStepId</td>
+                            <td>@route.ToStepId</td>
+                            <td><code>@(route.ConditionExpression ?? "Default")</code></td>
+                            <td class="text-end">@route.Priority</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-lg-6">
+        <div class="workspace-card p-3">
+            <h2 class="h5">Steps JSON</h2>
+            <pre class="code-block bg-light border rounded p-3 mb-0"><code>@Model.StepsJson</code></pre>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="workspace-card p-3">
+            <h2 class="h5">Routes JSON</h2>
+            <pre class="code-block bg-light border rounded p-3 mb-0"><code>@Model.RoutingRulesJson</code></pre>
+        </div>
+    </div>
+</div>

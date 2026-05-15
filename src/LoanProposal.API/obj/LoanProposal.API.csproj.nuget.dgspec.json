@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.API\\LoanProposal.API.csproj": {}
+    "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.API\\LoanProposal.API.csproj": {}
   },
   "projects": {
-    "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.API\\LoanProposal.API.csproj": {
+    "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.API\\LoanProposal.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.API\\LoanProposal.API.csproj",
+        "projectUniqueName": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.API\\LoanProposal.API.csproj",
         "projectName": "LoanProposal.API",
-        "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.API\\LoanProposal.API.csproj",
+        "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.API\\LoanProposal.API.csproj",
         "packagesPath": "C:\\Users\\shahjahan\\.nuget\\packages\\",
-        "outputPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.API\\obj\\",
+        "outputPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,11 +33,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Application\\LoanProposal.Application.csproj": {
-                "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Application\\LoanProposal.Application.csproj"
+              "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Application\\LoanProposal.Application.csproj": {
+                "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Application\\LoanProposal.Application.csproj"
               },
-              "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Infrastructure\\LoanProposal.Infrastructure.csproj": {
-                "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Infrastructure\\LoanProposal.Infrastructure.csproj"
+              "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Infrastructure\\LoanProposal.Infrastructure.csproj": {
+                "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Infrastructure\\LoanProposal.Infrastructure.csproj"
               }
             }
           }
@@ -58,9 +58,13 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Elsa": {
+              "target": "Package",
+              "version": "[3.6.1, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[8.0.22, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -537,14 +541,14 @@
         }
       }
     },
-    "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Application\\LoanProposal.Application.csproj": {
+    "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Application\\LoanProposal.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Application\\LoanProposal.Application.csproj",
+        "projectUniqueName": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Application\\LoanProposal.Application.csproj",
         "projectName": "LoanProposal.Application",
-        "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Application\\LoanProposal.Application.csproj",
+        "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Application\\LoanProposal.Application.csproj",
         "packagesPath": "C:\\Users\\shahjahan\\.nuget\\packages\\",
-        "outputPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Application\\obj\\",
+        "outputPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -566,8 +570,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Core\\LoanProposal.Core.csproj": {
-                "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Core\\LoanProposal.Core.csproj"
+              "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Core\\LoanProposal.Core.csproj": {
+                "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Core\\LoanProposal.Core.csproj"
               }
             }
           }
@@ -918,14 +922,14 @@
         }
       }
     },
-    "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Core\\LoanProposal.Core.csproj": {
+    "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Core\\LoanProposal.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Core\\LoanProposal.Core.csproj",
+        "projectUniqueName": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Core\\LoanProposal.Core.csproj",
         "projectName": "LoanProposal.Core",
-        "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Core\\LoanProposal.Core.csproj",
+        "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Core\\LoanProposal.Core.csproj",
         "packagesPath": "C:\\Users\\shahjahan\\.nuget\\packages\\",
-        "outputPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Core\\obj\\",
+        "outputPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -1285,14 +1289,14 @@
         }
       }
     },
-    "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Infrastructure\\LoanProposal.Infrastructure.csproj": {
+    "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Infrastructure\\LoanProposal.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Infrastructure\\LoanProposal.Infrastructure.csproj",
+        "projectUniqueName": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Infrastructure\\LoanProposal.Infrastructure.csproj",
         "projectName": "LoanProposal.Infrastructure",
-        "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Infrastructure\\LoanProposal.Infrastructure.csproj",
+        "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Infrastructure\\LoanProposal.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\shahjahan\\.nuget\\packages\\",
-        "outputPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Infrastructure\\obj\\",
+        "outputPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -1314,8 +1318,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Core\\LoanProposal.Core.csproj": {
-                "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude\\src\\LoanProposal.Core\\LoanProposal.Core.csproj"
+              "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Core\\LoanProposal.Core.csproj": {
+                "projectPath": "D:\\my-github-repo\\LoanProposal-SaaS-Blueprint-Claude-1\\src\\LoanProposal.Core\\LoanProposal.Core.csproj"
               }
             }
           }
@@ -1336,6 +1340,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Elsa": {
+              "target": "Package",
+              "version": "[3.6.1, )"
+            },
             "Hangfire.Core": {
               "target": "Package",
               "version": "[1.8.6, )"
