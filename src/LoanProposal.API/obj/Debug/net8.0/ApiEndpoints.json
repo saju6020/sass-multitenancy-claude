@@ -10,6 +10,68 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "LoanProposal.API.Controllers.AccountController",
+    "Method": "AccessDenied",
+    "RelativePath": "account/access-denied",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LoanProposal.API.Controllers.AccountController",
+    "Method": "Login",
+    "RelativePath": "account/login",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "returnUrl",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LoanProposal.API.Controllers.AccountController",
+    "Method": "Login",
+    "RelativePath": "account/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Password",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ReturnUrl",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LoanProposal.API.Controllers.AccountController",
+    "Method": "Logout",
+    "RelativePath": "account/logout",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "LoanProposal.API.Controllers.LoanApplicationsController",
     "Method": "Submit",
     "RelativePath": "api/applications",
@@ -195,6 +257,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "LoanProposal.API.Controllers.TokenController",
+    "Method": "Token",
+    "RelativePath": "auth/token",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "LoanProposal.API.Controllers.TokenRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "LoanProposal.API.Controllers.DashboardController",
     "Method": "Index",
     "RelativePath": "dashboard",
@@ -237,6 +315,11 @@
         "Name": "id",
         "Type": "System.Guid",
         "IsRequired": true
+      },
+      {
+        "Name": "tenantId",
+        "Type": "System.Guid",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

@@ -1,0 +1,124 @@
+@baseUrl = https://localhost:5001
+@password = Password123!
+
+### Platform admin token
+# @name platformLogin
+POST {{baseUrl}}/auth/token
+Content-Type: application/json
+
+{
+  "email": "platform@loanproposal.local",
+  "password": "{{password}}"
+}
+
+### Create a tenant as PlatformAdmin
+POST {{baseUrl}}/platform/tenants
+Authorization: Bearer {{platformLogin.response.body.$.access_token}}
+Content-Type: application/json
+
+{
+  "name": "Pacific Lending Co",
+  "slug": "pacific-lending",
+  "currency": "AUD",
+  "timezone": "Australia/Sydney"
+}
+
+### Acme tenant admin token
+# @name acmeAdminLogin
+POST {{baseUrl}}/auth/token
+Content-Type: application/json
+
+{
+  "email": "admin@acme-bank.local",
+  "password": "{{password}}"
+}
+
+### Tenant admin can read tenant rules
+GET {{baseUrl}}/api/configuration/rules
+Authorization: Bearer {{acmeAdminLogin.response.body.$.access_token}}
+
+### Tenant admin can validate a rule
+POST {{baseUrl}}/api/configuration/rules/validate
+Authorization: Bearer {{acmeAdminLogin.response.body.$.access_token}}
+Content-Type: application/json
+
+{
+  "category": "Eligibility",
+  "expression": "{\"and\":[{\">=\":[{\"var\":\"applicant.creditScore\"},620]}]}"
+}
+
+### Acme loan officer token
+# @name acmeOfficerLogin
+POST {{baseUrl}}/auth/token
+Content-Type: application/json
+
+{
+  "email": "officer@acme-bank.local",
+  "password": "{{password}}"
+}
+
+### Loan officer can list applications for own tenant
+GET {{baseUrl}}/api/applications
+Authorization: Bearer {{acmeOfficerLogin.response.body.$.access_token}}
+
+### Loan officer can search by custom field for own tenant
+GET {{baseUrl}}/api/applications/search?fieldKey=origination_channel&value=Branch
+Authorization: Bearer {{acmeOfficerLogin.response.body.$.access_token}}
+
+### Loan officer submit application
+# Replace IDs with values from the tenant database or MVC UI.
+POST {{baseUrl}}/api/applications
+Authorization: Bearer {{acmeOfficerLogin.response.body.$.access_token}}
+Content-Type: application/json
+
+{
+  "loanProductId": "00000000-0000-0000-0000-000000000000",
+  "applicantId": "00000000-0000-0000-0000-000000000000",
+  "requestedAmount": 45000,
+  "requestedTenureMonths": 36,
+  "customFields": {
+    "origination_channel": "Branch",
+    "relationship_manager_id": "RM-042"
+  }
+}
+
+### Acme reviewer token
+# @name acmeReviewerLogin
+POST {{baseUrl}}/auth/token
+Content-Type: application/json
+
+{
+  "email": "reviewer@acme-bank.local",
+  "password": "{{password}}"
+}
+
+### Reviewer can list applications
+GET {{baseUrl}}/api/applications
+Authorization: Bearer {{acmeReviewerLogin.response.body.$.access_token}}
+
+### Acme approver token
+# @name acmeApproverLogin
+POST {{baseUrl}}/auth/token
+Content-Type: application/json
+
+{
+  "email": "approver@acme-bank.local",
+  "password": "{{password}}"
+}
+
+### Approver can advance an application
+# Replace applicationId with a real application ID.
+POST {{baseUrl}}/api/applications/00000000-0000-0000-0000-000000000000/advance
+Authorization: Bearer {{acmeApproverLogin.response.body.$.access_token}}
+Content-Type: application/json
+
+{
+  "action": "approve",
+  "comments": "Approved from HTTP test collection"
+}
+
+### Cross-tenant guard should return 403
+# Replace otherTenantId with a tenant ID that does not belong to acme-bank.
+GET {{baseUrl}}/api/applications
+Authorization: Bearer {{acmeOfficerLogin.response.body.$.access_token}}
+X-Tenant-Id: 00000000-0000-0000-0000-000000000000

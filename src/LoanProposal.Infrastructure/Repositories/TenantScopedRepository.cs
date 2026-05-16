@@ -5,9 +5,8 @@ using Microsoft.EntityFrameworkCore;
 namespace LoanProposal.Infrastructure.Repositories;
 
 /// <summary>
-/// Base repository that all tenant-scoped repositories inherit from.
-/// EF Core's global query filters (set in AppDbContext) automatically scope
-/// all queries to the current tenant — no explicit TenantId filtering needed in derived classes.
+/// Base repository for data stored inside the resolved tenant database.
+/// Physical database selection is handled before this repository is created.
 /// </summary>
 public abstract class TenantScopedRepository<T> : ITenantScopedRepository<T> where T : class
 {

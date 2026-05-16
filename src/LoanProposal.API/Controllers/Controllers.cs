@@ -13,7 +13,7 @@ namespace LoanProposal.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/applications")]
-[Authorize]
+[Authorize(Policy = "LoanParticipant")]
 public class LoanApplicationsController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -30,6 +30,7 @@ public class LoanApplicationsController : ControllerBase
 
     /// <summary>Submit a new loan application.</summary>
     [HttpPost]
+    [Authorize(Policy = "LoanOfficer")]
     public async Task<IActionResult> Submit([FromBody] SubmitApplicationRequest request, CancellationToken ct)
     {
         var result = await _mediator.Send(new SubmitLoanApplicationCommand(
@@ -67,6 +68,7 @@ public class LoanApplicationsController : ControllerBase
 
     /// <summary>Advance an application through the configured workflow.</summary>
     [HttpPost("{id:guid}/advance")]
+    [Authorize(Policy = "LoanParticipant")]
     public async Task<IActionResult> Advance(Guid id, [FromBody] AdvanceRequest request, CancellationToken ct)
     {
         var result = await _mediator.Send(new AdvanceWorkflowCommand(id, request.Action, request.Comments), ct);

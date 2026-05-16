@@ -1,0 +1,137 @@
+<mxfile host="app.diagrams.net" modified="2026-05-16T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram name="Current Architecture" id="loanproposal-current-architecture">
+    <mxGraphModel dx="1720" dy="1010" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="LoanProposal SaaS - Current Tenant-Aware Architecture" style="text;html=1;strokeColor=none;fillColor=none;fontSize=24;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="350" y="20" width="900" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="clients" value="Clients" style="swimlane;html=1;rounded=0;whiteSpace=wrap;fillColor=#f8f9fa;strokeColor=#6c757d;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="90" width="240" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="browser" value="Browser MVC User&#xa;Cookie auth&#xa;Role-based navigation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e7f1ff;strokeColor=#0d6efd;" vertex="1" parent="clients">
+          <mxGeometry x="20" y="50" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="apiClient" value="API / Postman / .http&#xa;Bearer JWT&#xa;tests/LoanProposal.Api.http" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e7f1ff;strokeColor=#0d6efd;" vertex="1" parent="clients">
+          <mxGeometry x="20" y="170" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="roleUsers" value="Seeded users&#xa;PlatformAdmin&#xa;TenantAdmin&#xa;LoanOfficer&#xa;Reviewer&#xa;Approver" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3cd;strokeColor=#ffc107;" vertex="1" parent="clients">
+          <mxGeometry x="20" y="290" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="apiBoundary" value="LoanProposal.API" style="swimlane;html=1;rounded=0;whiteSpace=wrap;fillColor=#f8f9fa;strokeColor=#6c757d;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="90" width="520" height="590" as="geometry" />
+        </mxCell>
+        <mxCell id="auth" value="Account/Auth Controllers&#xa;/account/login&#xa;/account/logout&#xa;/auth/token" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d1e7dd;strokeColor=#198754;" vertex="1" parent="apiBoundary">
+          <mxGeometry x="25" y="50" width="210" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="authSchemes" value="Authentication Schemes&#xa;Smart selector&#xa;Cookie for MVC&#xa;JWT Bearer for API&#xa;Issuer validation disabled" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d1e7dd;strokeColor=#198754;" vertex="1" parent="apiBoundary">
+          <mxGeometry x="280" y="50" width="215" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="tenantMiddleware" value="TenantResolutionMiddleware&#xa;1. tenant_id claim&#xa;2. subdomain&#xa;3. X-Tenant-Id&#xa;Rejects tenant mismatch" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cff4fc;strokeColor=#0dcaf0;" vertex="1" parent="apiBoundary">
+          <mxGeometry x="150" y="175" width="235" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="mvcControllers" value="MVC Controllers&#xa;DashboardController&#xa;TenantsController&#xa;ConfigurationController&#xa;ApplicationsController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e2e3e5;strokeColor=#6c757d;" vertex="1" parent="apiBoundary">
+          <mxGeometry x="25" y="325" width="210" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="apiControllers" value="API Controllers&#xa;/platform/tenants&#xa;/api/configuration/*&#xa;/api/applications/*" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e2e3e5;strokeColor=#6c757d;" vertex="1" parent="apiBoundary">
+          <mxGeometry x="280" y="325" width="215" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="policies" value="Authorization Policies&#xa;PlatformAdmin: tenants&#xa;TenantAdmin: config&#xa;LoanOfficer: create&#xa;Reviewer: review&#xa;Approver: approve/reject" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3cd;strokeColor=#ffc107;" vertex="1" parent="apiBoundary">
+          <mxGeometry x="150" y="475" width="235" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="appBoundary" value="Application / Infrastructure Services" style="swimlane;html=1;rounded=0;whiteSpace=wrap;fillColor=#f8f9fa;strokeColor=#6c757d;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="900" y="90" width="310" height="590" as="geometry" />
+        </mxCell>
+        <mxCell id="tenantContext" value="ITenantContext&#xa;TenantId&#xa;TenantSlug&#xa;ConnectionString" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cff4fc;strokeColor=#0dcaf0;" vertex="1" parent="appBoundary">
+          <mxGeometry x="45" y="55" width="220" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="tenantFactory" value="TenantDbContextFactory&#xa;BuildDatabaseName(slug)&#xa;ResolveConnectionString(tenant)&#xa;CreateDbContext(tenant)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cff4fc;strokeColor=#0dcaf0;" vertex="1" parent="appBoundary">
+          <mxGeometry x="45" y="175" width="220" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="repositories" value="Tenant-Scoped Repositories&#xa;LoanApplicationRepository&#xa;RuleDefinitionRepository&#xa;WorkflowDefinitionRepository&#xa;CustomFieldRepository" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e2e3e5;strokeColor=#6c757d;" vertex="1" parent="appBoundary">
+          <mxGeometry x="45" y="320" width="220" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="domainServices" value="Domain Services&#xa;JsonLogicRuleEngine&#xa;ElsaWorkflowEngine&#xa;SlaTimerService&#xa;LoggingNotificationService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e2e3e5;strokeColor=#6c757d;" vertex="1" parent="appBoundary">
+          <mxGeometry x="45" y="475" width="220" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="dataBoundary" value="PostgreSQL Data Stores" style="swimlane;html=1;rounded=0;whiteSpace=wrap;fillColor=#f8f9fa;strokeColor=#6c757d;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="90" width="300" height="590" as="geometry" />
+        </mxCell>
+        <mxCell id="platformDb" value="Platform Database&#xa;PlatformDbContext&#xa;Tenants&#xa;PlatformUsers&#xa;DB connection strings" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f8d7da;strokeColor=#dc3545;" vertex="1" parent="dataBoundary">
+          <mxGeometry x="45" y="55" width="210" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="tenantDb1" value="Tenant DB&#xa;loanproposal_acme_bank&#xa;Configurations, Fields&#xa;Rules, Workflows&#xa;Applications" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d1e7dd;strokeColor=#198754;" vertex="1" parent="dataBoundary">
+          <mxGeometry x="45" y="225" width="210" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="tenantDb2" value="Tenant DB&#xa;loanproposal_global_finance&#xa;Same schema&#xa;Physically isolated" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d1e7dd;strokeColor=#198754;" vertex="1" parent="dataBoundary">
+          <mxGeometry x="45" y="370" width="210" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="tenantDb3" value="Tenant DB&#xa;loanproposal_al_baraka&#xa;Same schema&#xa;Physically isolated" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d1e7dd;strokeColor=#198754;" vertex="1" parent="dataBoundary">
+          <mxGeometry x="45" y="495" width="210" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="flowLogin" value="login / token" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#198754;fontColor=#198754;" edge="1" parent="1" source="browser" target="auth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="flowToken" value="POST /auth/token" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#198754;fontColor=#198754;" edge="1" parent="1" source="apiClient" target="auth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="authToPlatformDb" value="validate user / roles" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#dc3545;fontColor=#dc3545;" edge="1" parent="1" source="auth" target="platformDb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="authToSchemes" value="claims principal&#xa;tenant_id, tenant_slug, roles" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#198754;fontColor=#198754;" edge="1" parent="1" source="auth" target="authSchemes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="apiToMiddleware" value="authenticated request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#0d6efd;fontColor=#0d6efd;" edge="1" parent="1" source="authSchemes" target="tenantMiddleware">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tenantLookup" value="lookup tenant registry" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#dc3545;fontColor=#dc3545;" edge="1" parent="1" source="tenantMiddleware" target="platformDb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="middlewareToContext" value="sets HttpTenantContext" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#0dcaf0;fontColor=#0dcaf0;" edge="1" parent="1" source="tenantMiddleware" target="tenantContext">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mvcPolicy" value="role checks" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#ffc107;fontColor=#856404;" edge="1" parent="1" source="policies" target="mvcControllers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="apiPolicy" value="role checks" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#ffc107;fontColor=#856404;" edge="1" parent="1" source="policies" target="apiControllers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="controllersToContext" value="resolved tenant" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#0dcaf0;fontColor=#0dcaf0;" edge="1" parent="1" source="mvcControllers" target="tenantContext">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="apiToContext" value="resolved tenant" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#0dcaf0;fontColor=#0dcaf0;" edge="1" parent="1" source="apiControllers" target="tenantContext">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="contextToFactory" value="connection string" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#0dcaf0;fontColor=#0dcaf0;" edge="1" parent="1" source="tenantContext" target="tenantFactory">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="factoryToTenantDb1" value="AppDbContext" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#198754;fontColor=#198754;" edge="1" parent="1" source="tenantFactory" target="tenantDb1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="factoryToTenantDb2" value="AppDbContext" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#198754;fontColor=#198754;dashed=1;" edge="1" parent="1" source="tenantFactory" target="tenantDb2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="factoryToTenantDb3" value="AppDbContext" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#198754;fontColor=#198754;dashed=1;" edge="1" parent="1" source="tenantFactory" target="tenantDb3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="repoUsesDb" value="queries tenant DB" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#6c757d;fontColor=#6c757d;" edge="1" parent="1" source="repositories" target="tenantDb1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="serviceUsesRepo" value="workflow/rules/SLA" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#6c757d;fontColor=#6c757d;" edge="1" parent="1" source="domainServices" target="repositories">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend" value="Legend&#xa;Red: platform control plane&#xa;Green: authentication and tenant data&#xa;Blue: request/tenant resolution&#xa;Yellow: authorization roles" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;align=left;spacing=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="720" width="300" height="115" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

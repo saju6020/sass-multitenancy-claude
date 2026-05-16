@@ -5,6 +5,84 @@
     "version": "v1"
   },
   "paths": {
+    "/account/login": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "parameters": [
+          {
+            "name": "returnUrl",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "parameters": [
+          {
+            "name": "Email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Password",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ReturnUrl",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/account/logout": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/account/access-denied": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/loan-applications": {
       "get": {
         "tags": [
@@ -44,6 +122,14 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "tenantId",
+            "in": "query",
             "schema": {
               "type": "string",
               "format": "uuid"
@@ -1220,6 +1306,37 @@
           }
         }
       }
+    },
+    "/auth/token": {
+      "post": {
+        "tags": [
+          "Token"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1432,6 +1549,20 @@
             "additionalProperties": {
               "nullable": true
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TokenRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
             "nullable": true
           }
         },

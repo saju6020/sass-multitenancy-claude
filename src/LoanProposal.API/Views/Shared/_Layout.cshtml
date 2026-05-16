@@ -28,7 +28,17 @@
                     </li>
                     <li class="nav-item"><a class="nav-link" href="/swagger">API Docs</a></li>
                 </ul>
-                <span class="navbar-text small">Multitenant loan origination blueprint</span>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <span class="navbar-text small me-3">@User.Identity.Name</span>
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-outline-light">Sign out</button>
+                    </form>
+                }
+                else
+                {
+                    <a class="btn btn-sm btn-outline-light" asp-controller="Account" asp-action="Login">Sign in</a>
+                }
             </div>
         </div>
     </nav>
