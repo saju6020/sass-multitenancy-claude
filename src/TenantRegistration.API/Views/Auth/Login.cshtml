@@ -1,0 +1,18 @@
+@model TenantRegistration.API.Controllers.LoginForm
+@{
+    ViewData["Title"] = "Sign In";
+}
+
+<div style="max-width:420px;margin:64px auto;font-family:Segoe UI,Arial,sans-serif">
+    <h1 style="font-size:24px">Tenant Registration Sign In</h1>
+    <form method="post" action="/account/login">
+        @Html.AntiForgeryToken()
+        <input name="ReturnUrl" type="hidden" value="@Model.ReturnUrl" />
+        <div asp-validation-summary="ModelOnly" style="color:#b00020;margin:12px 0"></div>
+        <label>Email</label>
+        <input name="Email" value="@Model.Email" autocomplete="username" style="display:block;width:100%;padding:10px;margin:6px 0 14px" />
+        <label>Password</label>
+        <input name="Password" type="password" autocomplete="current-password" style="display:block;width:100%;padding:10px;margin:6px 0 18px" />
+        <button type="submit" style="width:100%;padding:10px">Sign in</button>
+    </form>
+</div>

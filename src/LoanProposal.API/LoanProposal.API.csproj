@@ -13,4 +13,9 @@
     <ProjectReference Include="..\LoanProposal.Application\LoanProposal.Application.csproj" />
     <ProjectReference Include="..\LoanProposal.Infrastructure\LoanProposal.Infrastructure.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared.Contracts\AuthClaimTypes.cs" Link="SharedContracts\AuthClaimTypes.cs" />
+    <Compile Include="..\Shared.Contracts\RoleNames.cs" Link="SharedContracts\RoleNames.cs" />
+    <Compile Include="..\Shared.Contracts\TenantRegistryContracts.cs" Link="SharedContracts\TenantRegistryContracts.cs" />
+  </ItemGroup>
 </Project>

@@ -1,18 +1,13 @@
+using LoanProposal.API.Services;
 using LoanProposal.Core.Interfaces;
 using LoanProposal.Infrastructure.Services;
+using Shared.Contracts;
 
 namespace LoanProposal.API.Middleware;
 
 /// <summary>
-/// Resolves the current tenant from the HTTP request and registers it
-/// as ITenantContext for the duration of the request.
-///
-/// Resolution order:
-///   1. JWT claim "tenant_id" (preferred for API access)
-///   2. Subdomain: {slug}.loanplatform.io
-///   3. X-Tenant-Id header (for machine-to-machine integrations)
-///
-/// Returns 401 if no tenant can be identified.
+/// Resolves the current tenant from claims/header/subdomain, then asks TenantRegistration
+/// for the LoanProposal service database metadata.
 /// </summary>
 public class TenantResolutionMiddleware
 {
@@ -20,65 +15,62 @@ public class TenantResolutionMiddleware
 
     public TenantResolutionMiddleware(RequestDelegate next) => _next = next;
 
-    public async Task InvokeAsync(HttpContext context, ITenantRepository tenantRepo)
+    public async Task InvokeAsync(HttpContext context, ITenantRegistryClient tenantRegistryClient)
     {
-        Guid? tenantId = null;
-        string? tenantSlug = null;
+        TenantServiceDescriptor? tenant = null;
 
-        // Strategy 1: JWT claim (set by authentication middleware)
-        var jwtClaim = context.User.FindFirst("tenant_id");
+        var jwtClaim = context.User.FindFirst(AuthClaimTypes.TenantId);
         if (jwtClaim is not null && Guid.TryParse(jwtClaim.Value, out var claimTenantId))
+            tenant = await tenantRegistryClient.GetLoanProposalTenantAsync(claimTenantId, context.RequestAborted);
+
+        if (tenant is not null && context.Request.Headers.TryGetValue("X-Tenant-Id", out var requestedTenantId))
         {
-            tenantId = claimTenantId;
-            tenantSlug = context.User.FindFirst("tenant_slug")?.Value ?? "unknown";
+            if (Guid.TryParse(requestedTenantId, out var headerTenantId) && headerTenantId != tenant.TenantId)
+            {
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                await context.Response.WriteAsJsonAsync(new { error = "Requested tenant does not match the authenticated user's tenant." });
+                return;
+            }
         }
 
-        // Strategy 2: Subdomain
-        if (tenantId is null)
+        if (tenant is null)
         {
             var host = context.Request.Host.Host;
             var parts = host.Split('.');
-            if (parts.Length >= 3) // {slug}.loanplatform.io
-            {
-                var slug = parts[0];
-                var tenant = await tenantRepo.GetBySlugAsync(slug);
-                if (tenant is not null)
-                {
-                    tenantId = tenant.Id;
-                    tenantSlug = tenant.Slug;
-                }
-            }
+            if (parts.Length >= 3)
+                tenant = await tenantRegistryClient.GetLoanProposalTenantBySlugAsync(parts[0], context.RequestAborted);
         }
 
-        // Strategy 3: Header
-        if (tenantId is null && context.Request.Headers.TryGetValue("X-Tenant-Id", out var headerValue))
+        if (tenant is not null && context.User.FindFirst(AuthClaimTypes.TenantSlug) is { Value: var claimTenantSlug }
+            && !string.IsNullOrWhiteSpace(claimTenantSlug)
+            && !string.Equals(claimTenantSlug, tenant.TenantSlug, StringComparison.OrdinalIgnoreCase))
+        {
+            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            await context.Response.WriteAsJsonAsync(new { error = "Requested tenant slug does not match the authenticated user's tenant." });
+            return;
+        }
+
+        if (tenant is null && context.Request.Headers.TryGetValue("X-Tenant-Id", out var headerValue))
         {
             if (Guid.TryParse(headerValue, out var headerTenantId))
-            {
-                // In production: verify this tenant ID is valid
-                tenantId = headerTenantId;
-                tenantSlug = "via-header";
-            }
+                tenant = await tenantRegistryClient.GetLoanProposalTenantAsync(headerTenantId, context.RequestAborted);
         }
 
-        if (tenantId is null)
+        if (tenant is null)
         {
-            // Platform admin routes bypass tenant resolution
-            if (context.Request.Path.StartsWithSegments("/platform"))
-            {
-                context.RequestServices.GetRequiredService<ITenantContext>();
-                await _next(context);
-                return;
-            }
-
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             await context.Response.WriteAsJsonAsync(new { error = "Tenant could not be identified." });
             return;
         }
 
-        // Register the resolved tenant context for this request
-        var tenantContext = new HttpTenantContext(tenantId.Value, tenantSlug!);
-        context.Items["TenantContext"] = tenantContext;
+        if (!tenant.IsActive)
+        {
+            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            await context.Response.WriteAsJsonAsync(new { error = "Tenant is inactive." });
+            return;
+        }
+
+        context.Items["TenantContext"] = new HttpTenantContext(tenant.TenantId, tenant.TenantSlug, tenant.ConnectionString);
 
         await _next(context);
     }

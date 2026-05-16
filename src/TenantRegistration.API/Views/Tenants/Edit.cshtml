@@ -1,0 +1,54 @@
+@model TenantEditForm
+@{
+    ViewData["Title"] = "Edit Tenant";
+}
+
+<section class="card">
+    <h1 style="margin-top:0">Edit Tenant</h1>
+    <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+        <input asp-for="Id" type="hidden" />
+        <div class="grid">
+            <div>
+                <label asp-for="Name"></label>
+                <input asp-for="Name" />
+            </div>
+            <div>
+                <label asp-for="Slug"></label>
+                <input asp-for="Slug" />
+            </div>
+            <div>
+                <label asp-for="Currency"></label>
+                <input asp-for="Currency" maxlength="3" />
+            </div>
+            <div>
+                <label asp-for="Timezone"></label>
+                <input asp-for="Timezone" />
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:18px">
+            <h2 style="margin-top:0">LoanProposal Service Metadata</h2>
+            <div class="grid" style="grid-template-columns: 1fr 2fr">
+                <div>
+                    <label asp-for="DatabaseName"></label>
+                    <input asp-for="DatabaseName" />
+                </div>
+                <div>
+                    <label asp-for="DatabaseConnectionString"></label>
+                    <input asp-for="DatabaseConnectionString" />
+                </div>
+            </div>
+            <p class="muted">Leave blank to regenerate from the tenant slug.</p>
+        </div>
+
+        <label style="display:flex;align-items:center;gap:8px;margin:12px 0">
+            <input asp-for="IsActive" style="width:auto" />
+            Active
+        </label>
+
+        <div class="actions">
+            <button class="btn" type="submit">Save tenant</button>
+            <a class="btn secondary" asp-action="Index">Back</a>
+        </div>
+    </form>
+</section>

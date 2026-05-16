@@ -1,0 +1,70 @@
+@model TenantListViewModel
+@{
+    ViewData["Title"] = "Platform Tenants";
+}
+
+<section class="card">
+    <h1 style="margin-top:0">Platform Tenants</h1>
+    <p class="muted">Register tenants and assign their LoanProposal database metadata.</p>
+    <form asp-action="Create" method="post">
+        <div class="grid">
+            <div>
+                <label asp-for="Form.Name">Name</label>
+                <input asp-for="Form.Name" name="Name" placeholder="Pacific Lending Co" />
+            </div>
+            <div>
+                <label asp-for="Form.Slug">Slug</label>
+                <input asp-for="Form.Slug" name="Slug" placeholder="pacific-lending" />
+            </div>
+            <div>
+                <label asp-for="Form.Currency">Currency</label>
+                <input asp-for="Form.Currency" name="Currency" maxlength="3" />
+            </div>
+            <div>
+                <label asp-for="Form.Timezone">Timezone</label>
+                <input asp-for="Form.Timezone" name="Timezone" placeholder="Asia/Dhaka" />
+            </div>
+        </div>
+        <div style="margin-top:14px">
+            <button class="btn" type="submit">Create tenant</button>
+        </div>
+    </form>
+</section>
+
+<section class="card">
+    <h2 style="margin-top:0">Registered Tenants</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Slug</th>
+                <th>Currency</th>
+                <th>Timezone</th>
+                <th>LoanProposal DB</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var tenant in Model.Tenants)
+        {
+            <tr>
+                <td>@tenant.Name</td>
+                <td><code>@tenant.Slug</code></td>
+                <td>@tenant.Currency</td>
+                <td>@tenant.Timezone</td>
+                <td><code>@tenant.DatabaseName</code></td>
+                <td>@(tenant.IsActive ? "Active" : "Inactive")</td>
+                <td>
+                    <div class="actions">
+                        <a class="btn secondary" asp-action="Edit" asp-route-id="@tenant.Id">Edit</a>
+                        <form asp-action="Delete" asp-route-id="@tenant.Id" method="post" onsubmit="return confirm('Delete this tenant registry row? The tenant service database will remain intact.');">
+                            <button class="btn danger" type="submit">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</section>

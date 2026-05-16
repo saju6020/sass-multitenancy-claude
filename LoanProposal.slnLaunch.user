@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "src\\LoanProposal.API\\LoanProposal.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\TenantRegistration.API\\TenantRegistration.API.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

@@ -1,0 +1,11 @@
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\Shared.Contracts\bin\Debug\net8.0\Shared.Contracts.deps.json
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\Shared.Contracts\bin\Debug\net8.0\Shared.Contracts.dll
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\Shared.Contracts\bin\Debug\net8.0\Shared.Contracts.pdb
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\Shared.Contracts\obj\Debug\net8.0\Shared.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\Shared.Contracts\obj\Debug\net8.0\Shared.Contracts.AssemblyInfoInputs.cache
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\Shared.Contracts\obj\Debug\net8.0\Shared.Contracts.AssemblyInfo.cs
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\Shared.Contracts\obj\Debug\net8.0\Shared.Contracts.csproj.CoreCompileInputs.cache
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\Shared.Contracts\obj\Debug\net8.0\Shared.Contracts.dll
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\Shared.Contracts\obj\Debug\net8.0\refint\Shared.Contracts.dll
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\Shared.Contracts\obj\Debug\net8.0\Shared.Contracts.pdb
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\Shared.Contracts\obj\Debug\net8.0\ref\Shared.Contracts.dll

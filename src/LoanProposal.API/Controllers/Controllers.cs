@@ -13,7 +13,7 @@ namespace LoanProposal.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/applications")]
-[Authorize]
+[Authorize(Policy = "LoanParticipant")]
 public class LoanApplicationsController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -30,6 +30,7 @@ public class LoanApplicationsController : ControllerBase
 
     /// <summary>Submit a new loan application.</summary>
     [HttpPost]
+    [Authorize(Policy = "LoanOfficer")]
     public async Task<IActionResult> Submit([FromBody] SubmitApplicationRequest request, CancellationToken ct)
     {
         var result = await _mediator.Send(new SubmitLoanApplicationCommand(
@@ -67,6 +68,7 @@ public class LoanApplicationsController : ControllerBase
 
     /// <summary>Advance an application through the configured workflow.</summary>
     [HttpPost("{id:guid}/advance")]
+    [Authorize(Policy = "LoanParticipant")]
     public async Task<IActionResult> Advance(Guid id, [FromBody] AdvanceRequest request, CancellationToken ct)
     {
         var result = await _mediator.Send(new AdvanceWorkflowCommand(id, request.Action, request.Comments), ct);
@@ -167,30 +169,6 @@ public class TenantConfigurationController : ControllerBase
 /// Platform-level endpoints for tenant provisioning and admin.
 /// Protected by platform-admin role — not accessible to tenant users.
 /// </summary>
-[ApiController]
-[Route("platform/tenants")]
-[Authorize(Roles = "PlatformAdmin")]
-public class PlatformTenantsController : ControllerBase
-{
-    private readonly ITenantRepository _tenantRepo;
-
-    public PlatformTenantsController(ITenantRepository tenantRepo) => _tenantRepo = tenantRepo;
-
-    [HttpPost]
-    public async Task<IActionResult> CreateTenant([FromBody] CreateTenantRequest request, CancellationToken ct)
-    {
-        var existingBySlug = await _tenantRepo.GetBySlugAsync(request.Slug, ct);
-        if (existingBySlug is not null)
-            return Conflict(new { error = $"Slug '{request.Slug}' is already taken." });
-
-        var tenant = Tenant.Create(request.Name, request.Slug, request.Currency, request.Timezone);
-        await _tenantRepo.AddAsync(tenant, ct);
-        await _tenantRepo.SaveChangesAsync(ct);
-
-        return Ok(new { tenant.Id, tenant.Slug, message = "Tenant provisioned." });
-    }
-}
-
 // ── Request DTOs ─────────────────────────────────────────────────────────────
 
 public record SubmitApplicationRequest(
@@ -205,4 +183,3 @@ public record AdvanceRequest(string Action, string? Comments);
 public record ActivateWorkflowRequest(DateTime? EffectiveFrom);
 public record CreateCustomFieldRequest(string FieldKey, string Label, Core.Entities.CustomFieldType FieldType, bool IsRequired);
 public record ValidateRuleRequest(string Expression, Core.Entities.RuleCategory Category);
-public record CreateTenantRequest(string Name, string Slug, string Currency, string Timezone);

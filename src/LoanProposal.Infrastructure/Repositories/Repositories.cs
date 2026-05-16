@@ -39,7 +39,7 @@ public class LoanApplicationRepository : TenantScopedRepository<LoanApplication>
     public async Task<IReadOnlyList<LoanApplication>> SearchByCustomFieldAsync(
         string fieldKey, string value, CancellationToken ct = default)
     {
-        // Uses EF.Functions.JsonContains — PostgreSQL JSONB @> operator
+        // Uses EF.Functions.JsonContains â€” PostgreSQL JSONB @> operator
         var jsonFilter = $"{{\"{fieldKey}\": \"{value}\"}}";
         return await Db.LoanApplications
             .Where(a => EF.Functions.JsonContains(a.CustomDataJson, jsonFilter))
@@ -116,4 +116,63 @@ public class CustomFieldRepository : TenantScopedRepository<CustomField>, ICusto
 
     public async Task<IReadOnlyList<CustomField>> GetSearchableFieldsAsync(CancellationToken ct = default)
         => await Db.CustomFields.Where(f => f.IsSearchable).ToListAsync(ct);
+}
+
+public class TenantRepository : IRepository<Tenant>, ITenantRepository
+{
+    private readonly PlatformDbContext _platformDb;
+    private readonly TenantDbContextFactory _tenantDbFactory;
+
+    public TenantRepository(PlatformDbContext platformDb, TenantDbContextFactory tenantDbFactory)
+    {
+        _platformDb = platformDb;
+        _tenantDbFactory = tenantDbFactory;
+    }
+
+    public Task<Tenant?> GetByIdAsync(Guid id, CancellationToken ct = default) =>
+        _platformDb.Tenants.FirstOrDefaultAsync(t => t.Id == id, ct);
+
+    public async Task<IReadOnlyList<Tenant>> GetAllAsync(CancellationToken ct = default) =>
+        await _platformDb.Tenants.Where(t => t.IsActive).OrderBy(t => t.Name).ToListAsync(ct);
+
+    public async Task AddAsync(Tenant entity, CancellationToken ct = default)
+    {
+        if (string.IsNullOrWhiteSpace(entity.DatabaseConnectionString))
+            entity.ConfigureDatabase(_tenantDbFactory.BuildDatabaseName(entity.Slug), _tenantDbFactory.BuildConnectionString(entity.Slug));
+
+        await _platformDb.Tenants.AddAsync(entity, ct);
+        await using var tenantDb = _tenantDbFactory.CreateDbContext(entity);
+        await tenantDb.Database.EnsureCreatedAsync(ct);
+    }
+
+    public Task UpdateAsync(Tenant entity, CancellationToken ct = default)
+    {
+        _platformDb.Tenants.Update(entity);
+        return Task.CompletedTask;
+    }
+
+    public async Task SaveChangesAsync(CancellationToken ct = default) =>
+        await _platformDb.SaveChangesAsync(ct);
+
+    public Task<Tenant?> GetBySlugAsync(string slug, CancellationToken ct = default) =>
+        _platformDb.Tenants.FirstOrDefaultAsync(t => t.Slug == slug, ct);
+
+    public async Task<TenantConfiguration?> GetConfigAsync(Guid tenantId, string key, CancellationToken ct = default)
+    {
+        var tenant = await GetByIdAsync(tenantId, ct);
+        if (tenant is null) return null;
+        await using var tenantDb = _tenantDbFactory.CreateDbContext(tenant);
+        return await tenantDb.TenantConfigurations.FirstOrDefaultAsync(c => c.Key == key, ct);
+    }
+
+    public async Task SetConfigAsync(TenantConfiguration config, CancellationToken ct = default)
+    {
+        var tenant = await GetByIdAsync(config.TenantId, ct)
+            ?? throw new InvalidOperationException("Tenant was not found.");
+        await using var tenantDb = _tenantDbFactory.CreateDbContext(tenant);
+        var existing = await tenantDb.TenantConfigurations.FirstOrDefaultAsync(c => c.Key == config.Key, ct);
+        if (existing is null) tenantDb.TenantConfigurations.Add(config);
+        else tenantDb.TenantConfigurations.Update(config);
+        await tenantDb.SaveChangesAsync(ct);
+    }
 }

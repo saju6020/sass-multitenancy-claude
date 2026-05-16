@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - TenantRegistration</title>
+    <style>
+        body { margin: 0; font-family: Segoe UI, Arial, sans-serif; background: #f6f8fb; color: #1f2937; }
+        .topbar { background: #143d59; color: white; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+        .brand { font-size: 18px; font-weight: 700; color: white; text-decoration: none; }
+        .nav a, .nav button { color: white; background: transparent; border: 1px solid rgba(255,255,255,.4); padding: 7px 10px; border-radius: 6px; text-decoration: none; cursor: pointer; }
+        main { padding: 24px; }
+        .card { background: white; border: 1px solid #d9e1ea; border-radius: 8px; padding: 18px; margin-bottom: 18px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+        .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+        label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+        input, select { width: 100%; box-sizing: border-box; padding: 9px; border: 1px solid #b8c4d1; border-radius: 6px; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 10px; border-bottom: 1px solid #e5eaf0; text-align: left; vertical-align: top; }
+        th { background: #eef3f8; font-size: 13px; }
+        .actions { display: flex; gap: 8px; align-items: center; }
+        .btn { display: inline-block; border: 1px solid #143d59; background: #143d59; color: white; padding: 8px 11px; border-radius: 6px; text-decoration: none; cursor: pointer; }
+        .btn.secondary { background: white; color: #143d59; }
+        .btn.danger { border-color: #b42318; background: #b42318; }
+        .alert { padding: 12px; border-radius: 6px; margin-bottom: 16px; }
+        .success { background: #dcfce7; border: 1px solid #86efac; }
+        .error { background: #fee2e2; border: 1px solid #fca5a5; }
+        .muted { color: #64748b; font-size: 13px; }
+        @@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="/platform/tenants">TenantRegistration</a>
+        <div class="nav">
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <span>@User.Identity.Name</span>
+                <form action="/account/logout" method="post" style="display:inline">
+                    @Html.AntiForgeryToken()
+                    <button type="submit">Sign out</button>
+                </form>
+            }
+            else
+            {
+                <a href="/account/login">Sign in</a>
+            }
+        </div>
+    </header>
+    <main>
+        @if (TempData["Success"] is string success)
+        {
+            <div class="alert success">@success</div>
+        }
+        @if (TempData["Error"] is string error)
+        {
+            <div class="alert error">@error</div>
+        }
+        @RenderBody()
+    </main>
+</body>
+</html>

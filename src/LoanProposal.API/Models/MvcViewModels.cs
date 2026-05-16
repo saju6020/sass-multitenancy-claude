@@ -239,3 +239,10 @@ public class LoanProposalForm
     public int RequestedTenureMonths { get; set; } = 12;
     public string CustomDataJson { get; set; } = "{}";
 }
+
+public class LoginViewModel
+{
+    public string Email { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+    public string? ReturnUrl { get; set; }
+}
