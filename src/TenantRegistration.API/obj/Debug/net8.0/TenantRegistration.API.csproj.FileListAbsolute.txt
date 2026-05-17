@@ -44,10 +44,10 @@ D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\TenantRegistration.AP
 D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\TenantRegistration.API\obj\Debug\net8.0\staticwebassets.build.json.cache
 D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\TenantRegistration.API\obj\Debug\net8.0\staticwebassets.development.json
 D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\TenantRegistration.API\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\TenantRegistration.API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\TenantRegistration.API\obj\Debug\net8.0\TenantRe.257EF8C9.Up2Date
 D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\TenantRegistration.API\obj\Debug\net8.0\TenantRegistration.API.dll
 D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\TenantRegistration.API\obj\Debug\net8.0\refint\TenantRegistration.API.dll
 D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\TenantRegistration.API\obj\Debug\net8.0\TenantRegistration.API.pdb
 D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\TenantRegistration.API\obj\Debug\net8.0\TenantRegistration.API.genruntimeconfig.cache
 D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\TenantRegistration.API\obj\Debug\net8.0\ref\TenantRegistration.API.dll
-D:\my-github-repo\LoanProposal-SaaS-Blueprint-Claude-1\src\TenantRegistration.API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
