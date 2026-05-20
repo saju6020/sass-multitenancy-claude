@@ -44,6 +44,13 @@ Draw.io diagram:
 
 ```text
 docs/split-service-architecture.drawio
+docs/saas-multitenancy-architecture.drawio
+```
+
+Mermaid architecture diagrams:
+
+```text
+docs/saas-multitenancy-architecture.md
 ```
 
 ---

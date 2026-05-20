@@ -1,0 +1,230 @@
+<mxfile host="app.diagrams.net" modified="2026-05-17T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram name="1 TenantRegistration Control Plane" id="tenantregistration-control-plane">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="tr-title" value="TenantRegistration.API - SaaS Control Plane" style="text;html=1;strokeColor=none;fillColor=none;fontSize=26;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="360" y="30" width="880" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-admin" value="Platform Admin&#xa;creates tenants" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#e7f1ff;strokeColor=#0d6efd;" vertex="1" parent="1">
+          <mxGeometry x="80" y="170" width="70" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-service" value="TenantRegistration.API&#xa;&#xa;Responsibilities:&#xa;- tenant registration&#xa;- first TenantAdmin creation&#xa;- login / JWT issuance&#xa;- service registry metadata" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d1e7dd;strokeColor=#198754;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="120" width="320" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-ui" value="/platform/tenants&#xa;MVC tenant registration UI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e7f1ff;strokeColor=#0d6efd;" vertex="1" parent="1">
+          <mxGeometry x="310" y="390" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-api" value="/api/platform/tenants&#xa;API tenant registration" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e7f1ff;strokeColor=#0d6efd;" vertex="1" parent="1">
+          <mxGeometry x="560" y="390" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-auth" value="/auth/token&#xa;/account/login&#xa;&#xa;issues JWT with tenant_id, tenant_slug, roles" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3cd;strokeColor=#ffc107;" vertex="1" parent="1">
+          <mxGeometry x="300" y="540" width="260" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-registry" value="Internal Registry Endpoints&#xa;&#xa;/internal/tenants&#xa;/internal/tenants/{id}/services/loan-proposal&#xa;/internal/tenants/slug/{slug}/services/loan-proposal" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3cd;strokeColor=#ffc107;" vertex="1" parent="1">
+          <mxGeometry x="600" y="540" width="330" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-platformdb" value="tenantregistration_platform&#xa;&#xa;Tenants&#xa;PlatformUsers&#xa;RolesCsv&#xa;LoanProposal DB metadata" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f8d7da;strokeColor=#dc3545;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="950" y="150" width="260" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-provisioner" value="LoanProposal tenant DB provisioner&#xa;&#xa;Uses AppDbContext.EnsureCreatedAsync()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cff4fc;strokeColor=#0dcaf0;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="970" y="410" width="280" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-db1" value="loanproposal_acme_bank" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d1e7dd;strokeColor=#198754;" vertex="1" parent="1">
+          <mxGeometry x="830" y="610" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-db2" value="loanproposal_global_finance" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d1e7dd;strokeColor=#198754;" vertex="1" parent="1">
+          <mxGeometry x="1090" y="610" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-db3" value="loanproposal_new_tenant&#xa;database-per-tenant" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d1e7dd;strokeColor=#198754;" vertex="1" parent="1">
+          <mxGeometry x="1350" y="610" width="220" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-note" value="SaaS control plane centralizes identity, tenant lifecycle, roles, and service database metadata. Business data is not stored here." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff3cd;strokeColor=#ffc107;" vertex="1" parent="1">
+          <mxGeometry x="80" y="740" width="510" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-e1" value="tenant info + admin credentials" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#0d6efd;" edge="1" parent="1" source="tr-admin" target="tr-service">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-e2" value="UI create" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#0d6efd;" edge="1" parent="1" source="tr-service" target="tr-ui">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-e3" value="API create" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#0d6efd;" edge="1" parent="1" source="tr-service" target="tr-api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-e4" value="one SaveChangesAsync: tenant + TenantAdmin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#dc3545;" edge="1" parent="1" source="tr-service" target="tr-platformdb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-e5" value="DB metadata lookup" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#ffc107;" edge="1" parent="1" source="tr-registry" target="tr-platformdb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-e6" value="provision physical DB" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#0dcaf0;" edge="1" parent="1" source="tr-service" target="tr-provisioner">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-e7" value="creates schema" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#198754;" edge="1" parent="1" source="tr-provisioner" target="tr-db1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-e8" value="creates schema" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#198754;" edge="1" parent="1" source="tr-provisioner" target="tr-db2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tr-e9" value="creates schema" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#198754;" edge="1" parent="1" source="tr-provisioner" target="tr-db3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="2 LoanProposal Business API" id="loanproposal-business-api">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lp-title" value="LoanProposal.API - Tenant-Aware Business Data Plane" style="text;html=1;strokeColor=none;fillColor=none;fontSize=26;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="330" y="30" width="940" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-user" value="Tenant User&#xa;TenantAdmin / LoanOfficer / Reviewer / Approver" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#e7f1ff;strokeColor=#0d6efd;" vertex="1" parent="1">
+          <mxGeometry x="70" y="160" width="90" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-login" value="/account/login&#xa;local MVC sign-in bridge" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e7f1ff;strokeColor=#0d6efd;" vertex="1" parent="1">
+          <mxGeometry x="300" y="120" width="240" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-token" value="TenantRegistration.API&#xa;/auth/token&#xa;&#xa;validates credentials and returns JWT" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d1e7dd;strokeColor=#198754;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="680" y="110" width="280" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-middleware" value="TenantResolutionMiddleware&#xa;&#xa;reads tenant_id / tenant_slug / X-Tenant-Id&#xa;validates active tenant&#xa;sets ITenantContext" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cff4fc;strokeColor=#0dcaf0;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="310" width="330" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-registry" value="TenantRegistration Internal Registry&#xa;&#xa;returns TenantServiceDescriptor:&#xa;tenant id, slug, currency, timezone, DB connection string" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3cd;strokeColor=#ffc107;" vertex="1" parent="1">
+          <mxGeometry x="710" y="330" width="350" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-app" value="LoanProposal Business Modules&#xa;&#xa;Dashboard&#xa;Tenant Configuration&#xa;Rules and Workflows&#xa;Loan Applications&#xa;Review / Approve / Reject" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d1e7dd;strokeColor=#198754;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="560" width="330" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-provision" value="Auto-provision on first access&#xa;&#xa;EnsureCreatedAsync if database metadata exists but physical DB is missing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cff4fc;strokeColor=#0dcaf0;" vertex="1" parent="1">
+          <mxGeometry x="720" y="560" width="340" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-db1" value="Tenant A DB&#xa;loanproposal_acme_bank&#xa;&#xa;workspace config&#xa;custom fields&#xa;rules / workflows&#xa;loan applications" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d1e7dd;strokeColor=#198754;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="240" width="250" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-db2" value="Tenant B DB&#xa;loanproposal_global_finance&#xa;&#xa;same schema&#xa;isolated data" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d1e7dd;strokeColor=#198754;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="450" width="250" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-db3" value="Tenant C DB&#xa;loanproposal_test_tenant_one&#xa;&#xa;same app, separate DB" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d1e7dd;strokeColor=#198754;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="650" width="250" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-note" value="LoanProposal is shared application code. Tenant isolation is enforced by resolving the tenant connection string before opening AppDbContext." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff3cd;strokeColor=#ffc107;" vertex="1" parent="1">
+          <mxGeometry x="70" y="780" width="540" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-e1" value="credentials" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#0d6efd;" edge="1" parent="1" source="lp-user" target="lp-login">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-e2" value="validate credentials" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#198754;" edge="1" parent="1" source="lp-login" target="lp-token">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-e3" value="JWT: tenant_id, tenant_slug, roles" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#198754;" edge="1" parent="1" source="lp-token" target="lp-login">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-e4" value="authenticated request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#0d6efd;" edge="1" parent="1" source="lp-user" target="lp-middleware">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-e5" value="tenant lookup" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#ffc107;" edge="1" parent="1" source="lp-middleware" target="lp-registry">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-e6" value="connection string" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#ffc107;" edge="1" parent="1" source="lp-registry" target="lp-middleware">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-e7" value="resolved tenant context" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#0dcaf0;" edge="1" parent="1" source="lp-middleware" target="lp-app">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-e8" value="ensure DB exists" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#0dcaf0;" edge="1" parent="1" source="lp-middleware" target="lp-provision">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-e9" value="tenant_id selects DB" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#198754;" edge="1" parent="1" source="lp-app" target="lp-db1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-e10" value="tenant_id selects DB" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#198754;" edge="1" parent="1" source="lp-app" target="lp-db2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lp-e11" value="tenant_id selects DB" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#198754;" edge="1" parent="1" source="lp-app" target="lp-db3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="3 SaaS Multitenancy Modality" id="saas-multitenancy-modality">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="saas-title" value="SaaS Multitenancy Modality: Shared Application, Database Per Tenant" style="text;html=1;strokeColor=none;fillColor=none;fontSize=26;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="250" y="30" width="1100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-platform-layer" value="Shared Platform Layer" style="swimlane;whiteSpace=wrap;html=1;startSize=36;fillColor=#f8f9fa;strokeColor=#6c757d;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="110" width="420" height="650" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-business-layer" value="Shared Business Application Layer" style="swimlane;whiteSpace=wrap;html=1;startSize=36;fillColor=#f8f9fa;strokeColor=#6c757d;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="590" y="110" width="420" height="650" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-data-layer" value="Isolated Tenant Data Layer" style="swimlane;whiteSpace=wrap;html=1;startSize=36;fillColor=#f8f9fa;strokeColor=#6c757d;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="110" width="420" height="650" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-tr" value="TenantRegistration.API&#xa;&#xa;shared control plane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d1e7dd;strokeColor=#198754;fontStyle=1;" vertex="1" parent="saas-platform-layer">
+          <mxGeometry x="70" y="90" width="280" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-pdb" value="tenantregistration_platform&#xa;&#xa;tenant identity&#xa;users + roles&#xa;service registry" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f8d7da;strokeColor=#dc3545;" vertex="1" parent="saas-platform-layer">
+          <mxGeometry x="70" y="270" width="280" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-jwt" value="JWT claims&#xa;&#xa;tenant_id&#xa;tenant_slug&#xa;roles" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3cd;strokeColor=#ffc107;" vertex="1" parent="saas-platform-layer">
+          <mxGeometry x="90" y="500" width="240" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-lp" value="LoanProposal.API&#xa;&#xa;shared business service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cff4fc;strokeColor=#0dcaf0;fontStyle=1;" vertex="1" parent="saas-business-layer">
+          <mxGeometry x="70" y="90" width="280" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-resolution" value="Tenant resolution&#xa;&#xa;claim/header/registry lookup&#xa;connection string selected per request" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3cd;strokeColor=#ffc107;" vertex="1" parent="saas-business-layer">
+          <mxGeometry x="70" y="270" width="280" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-code" value="Shared codebase&#xa;&#xa;controllers&#xa;repositories&#xa;rule engine&#xa;workflow engine" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d1e7dd;strokeColor=#198754;" vertex="1" parent="saas-business-layer">
+          <mxGeometry x="70" y="480" width="280" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-db-a" value="Tenant A&#xa;loanproposal_acme_bank" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d1e7dd;strokeColor=#198754;" vertex="1" parent="saas-data-layer">
+          <mxGeometry x="80" y="90" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-db-b" value="Tenant B&#xa;loanproposal_global_finance" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d1e7dd;strokeColor=#198754;" vertex="1" parent="saas-data-layer">
+          <mxGeometry x="80" y="270" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-db-c" value="Tenant C&#xa;loanproposal_test_tenant_one" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d1e7dd;strokeColor=#198754;" vertex="1" parent="saas-data-layer">
+          <mxGeometry x="80" y="450" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-summary" value="Modality summary: one shared SaaS platform + one shared business service + separate physical databases per tenant. Tenant claims choose the database; roles choose the allowed actions." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff3cd;strokeColor=#ffc107;" vertex="1" parent="1">
+          <mxGeometry x="270" y="830" width="1060" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-e1" value="stores identity and registry" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#dc3545;" edge="1" parent="1" source="saas-tr" target="saas-pdb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-e2" value="issues claims" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#ffc107;" edge="1" parent="1" source="saas-pdb" target="saas-jwt">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-e3" value="registry metadata" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#ffc107;" edge="1" parent="1" source="saas-pdb" target="saas-resolution">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-e4" value="auth claims" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#ffc107;" edge="1" parent="1" source="saas-jwt" target="saas-lp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-e5" value="request routed through tenant context" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#0dcaf0;" edge="1" parent="1" source="saas-lp" target="saas-resolution">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-e6" value="uses same application code" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#198754;" edge="1" parent="1" source="saas-resolution" target="saas-code">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-e7" value="tenant A connection" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#198754;" edge="1" parent="1" source="saas-resolution" target="saas-db-a">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-e8" value="tenant B connection" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#198754;" edge="1" parent="1" source="saas-resolution" target="saas-db-b">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="saas-e9" value="tenant C connection" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#198754;" edge="1" parent="1" source="saas-resolution" target="saas-db-c">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

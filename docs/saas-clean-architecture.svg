@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">LoanProposal SaaS Multitenancy Architecture</title>
+  <desc id="desc">Clean architecture diagram showing the platform service and business service for a shared application, database-per-tenant SaaS model.</desc>
+  <defs>
+    <marker id="arrow-blue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2563eb" />
+    </marker>
+    <marker id="arrow-green" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#059669" />
+    </marker>
+    <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.12" />
+    </filter>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 32px Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 400 17px Arial, sans-serif; fill: #475569; }
+      .section-title { font: 700 24px Arial, sans-serif; fill: #0f172a; }
+      .box-title { font: 700 18px Arial, sans-serif; fill: #0f172a; }
+      .box-text { font: 400 14px Arial, sans-serif; fill: #334155; }
+      .small { font: 400 13px Arial, sans-serif; fill: #475569; }
+      .arrow-label { font: 700 13px Arial, sans-serif; fill: #1e40af; }
+      .panel { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 22; filter: url(#soft-shadow); }
+      .platform { fill: #ecfdf5; stroke: #10b981; stroke-width: 2; rx: 16; }
+      .business { fill: #eff6ff; stroke: #3b82f6; stroke-width: 2; rx: 16; }
+      .data { fill: #fff7ed; stroke: #f97316; stroke-width: 2; rx: 16; }
+      .tenant { fill: #f0fdf4; stroke: #16a34a; stroke-width: 2; rx: 16; }
+      .note { fill: #fffbeb; stroke: #f59e0b; stroke-width: 2; rx: 16; }
+      .line-blue { stroke: #2563eb; stroke-width: 3; fill: none; marker-end: url(#arrow-blue); }
+      .line-green { stroke: #059669; stroke-width: 3; fill: none; marker-end: url(#arrow-green); }
+      .divider { stroke: #cbd5e1; stroke-width: 2; stroke-dasharray: 8 8; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1400" height="900" />
+
+  <text class="title" x="700" y="52" text-anchor="middle">LoanProposal SaaS Multitenancy Architecture</text>
+  <text class="subtitle" x="700" y="82" text-anchor="middle">Shared platform + shared business application + isolated database per tenant</text>
+
+  <rect class="panel" x="55" y="125" width="600" height="650" />
+  <text class="section-title" x="355" y="165" text-anchor="middle">1. Platform</text>
+  <text class="subtitle" x="355" y="193" text-anchor="middle">TenantRegistration.API</text>
+
+  <rect class="platform" x="95" y="235" width="220" height="115" />
+  <text class="box-title" x="205" y="264" text-anchor="middle">Platform Admin</text>
+  <text class="box-text" x="205" y="292" text-anchor="middle">Creates tenant</text>
+  <text class="box-text" x="205" y="314" text-anchor="middle">Adds TenantAdmin credentials</text>
+
+  <rect class="platform" x="380" y="225" width="230" height="140" />
+  <text class="box-title" x="495" y="254" text-anchor="middle">Tenant Registration</text>
+  <text class="box-text" x="495" y="283" text-anchor="middle">Tenant profile</text>
+  <text class="box-text" x="495" y="305" text-anchor="middle">TenantAdmin user</text>
+  <text class="box-text" x="495" y="327" text-anchor="middle">LoanProposal DB metadata</text>
+
+  <rect class="data" x="210" y="430" width="280" height="145" />
+  <text class="box-title" x="350" y="462" text-anchor="middle">Platform Database</text>
+  <text class="box-text" x="350" y="492" text-anchor="middle">tenantregistration_platform</text>
+  <text class="box-text" x="350" y="520" text-anchor="middle">Tenants | PlatformUsers | Roles</text>
+  <text class="box-text" x="350" y="542" text-anchor="middle">Tenant-to-database registry</text>
+
+  <rect class="platform" x="95" y="620" width="240" height="105" />
+  <text class="box-title" x="215" y="650" text-anchor="middle">Tenant-Aware IDP</text>
+  <text class="box-text" x="215" y="678" text-anchor="middle">Authenticates users</text>
+  <text class="box-text" x="215" y="700" text-anchor="middle">Understands tenant context</text>
+
+  <rect class="platform" x="380" y="620" width="230" height="105" />
+  <text class="box-title" x="495" y="650" text-anchor="middle">Claims and Registry</text>
+  <text class="box-text" x="495" y="678" text-anchor="middle">JWT: tenant_id, tenant_slug</text>
+  <text class="box-text" x="495" y="700" text-anchor="middle">roles + service metadata</text>
+
+  <path class="line-blue" d="M315 292 L372 292" />
+  <text class="arrow-label" x="344" y="278" text-anchor="middle">register</text>
+  <path class="line-green" d="M495 365 L410 425" />
+  <text class="arrow-label" x="470" y="400" text-anchor="middle">save</text>
+  <path class="line-green" d="M310 575 L230 613" />
+  <text class="arrow-label" x="245" y="600" text-anchor="middle">auth data</text>
+  <path class="line-green" d="M375 575 L470 613" />
+  <text class="arrow-label" x="455" y="600" text-anchor="middle">registry data</text>
+  <path class="line-blue" d="M335 672 L372 672" />
+  <text class="arrow-label" x="354" y="658" text-anchor="middle">claims</text>
+
+  <line class="divider" x1="700" y1="130" x2="700" y2="775" />
+
+  <rect class="panel" x="745" y="125" width="600" height="650" />
+  <text class="section-title" x="1045" y="165" text-anchor="middle">2. Business Service</text>
+  <text class="subtitle" x="1045" y="193" text-anchor="middle">LoanProposal.API</text>
+
+  <rect class="business" x="790" y="225" width="245" height="130" />
+  <text class="box-title" x="912" y="254" text-anchor="middle">Tenant User</text>
+  <text class="box-text" x="912" y="283" text-anchor="middle">Logs in with platform credentials</text>
+  <text class="box-text" x="912" y="305" text-anchor="middle">Uses TenantAdmin / LoanOfficer /</text>
+  <text class="box-text" x="912" y="327" text-anchor="middle">Reviewer / Approver role</text>
+
+  <rect class="business" x="1080" y="225" width="225" height="130" />
+  <text class="box-title" x="1192" y="254" text-anchor="middle">Tenant Resolution</text>
+  <text class="box-text" x="1192" y="283" text-anchor="middle">Reads JWT claims</text>
+  <text class="box-text" x="1192" y="305" text-anchor="middle">Calls platform registry</text>
+  <text class="box-text" x="1192" y="327" text-anchor="middle">Gets connection string</text>
+
+  <rect class="business" x="790" y="430" width="245" height="145" />
+  <text class="box-title" x="912" y="462" text-anchor="middle">Shared Business App</text>
+  <text class="box-text" x="912" y="492" text-anchor="middle">Workspace configuration</text>
+  <text class="box-text" x="912" y="514" text-anchor="middle">Rules and workflows</text>
+  <text class="box-text" x="912" y="536" text-anchor="middle">Loan application lifecycle</text>
+
+  <rect class="tenant" x="1090" y="405" width="215" height="70" />
+  <text class="box-title" x="1198" y="435" text-anchor="middle">Tenant A DB</text>
+  <text class="box-text" x="1198" y="458" text-anchor="middle">loanproposal_acme_bank</text>
+
+  <rect class="tenant" x="1090" y="505" width="215" height="70" />
+  <text class="box-title" x="1198" y="535" text-anchor="middle">Tenant B DB</text>
+  <text class="box-text" x="1198" y="558" text-anchor="middle">loanproposal_global_finance</text>
+
+  <rect class="tenant" x="1090" y="605" width="215" height="70" />
+  <text class="box-title" x="1198" y="635" text-anchor="middle">Tenant C DB</text>
+  <text class="box-text" x="1198" y="658" text-anchor="middle">loanproposal_new_tenant</text>
+
+  <path class="line-blue" d="M1035 290 L1072 290" />
+  <text class="arrow-label" x="1054" y="276" text-anchor="middle">claims</text>
+  <path class="line-blue" d="M1192 355 L1192 398" />
+  <text class="arrow-label" x="1218" y="382">select DB</text>
+  <path class="line-green" d="M1035 500 L1082 440" />
+  <path class="line-green" d="M1035 515 L1082 540" />
+  <path class="line-green" d="M1035 530 L1082 640" />
+
+  <path class="line-blue" d="M610 705 C735 790 875 790 1072 310" />
+  <text class="arrow-label" x="835" y="790" text-anchor="middle">Business API uses IDP claims and asks platform registry:</text>
+  <text class="arrow-label" x="835" y="810" text-anchor="middle">which database belongs to this tenant?</text>
+
+  <rect class="note" x="205" y="815" width="990" height="58" />
+  <text class="box-title" x="700" y="840" text-anchor="middle">Multitenancy rule</text>
+  <text class="box-text" x="700" y="863" text-anchor="middle">The application code is shared, but every tenant's business data is stored in its own physical LoanProposal database.</text>
+</svg>

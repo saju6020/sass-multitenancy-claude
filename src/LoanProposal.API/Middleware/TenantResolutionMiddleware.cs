@@ -1,5 +1,6 @@
 using LoanProposal.API.Services;
 using LoanProposal.Core.Interfaces;
+using LoanProposal.Infrastructure.Data;
 using LoanProposal.Infrastructure.Services;
 using Shared.Contracts;
 
@@ -15,7 +16,10 @@ public class TenantResolutionMiddleware
 
     public TenantResolutionMiddleware(RequestDelegate next) => _next = next;
 
-    public async Task InvokeAsync(HttpContext context, ITenantRegistryClient tenantRegistryClient)
+    public async Task InvokeAsync(
+        HttpContext context,
+        ITenantRegistryClient tenantRegistryClient,
+        TenantDbContextFactory tenantDbFactory)
     {
         TenantServiceDescriptor? tenant = null;
 
@@ -70,6 +74,7 @@ public class TenantResolutionMiddleware
             return;
         }
 
+        await tenantDbFactory.EnsureCreatedAsync(tenant.ConnectionString, context.RequestAborted);
         context.Items["TenantContext"] = new HttpTenantContext(tenant.TenantId, tenant.TenantSlug, tenant.ConnectionString);
 
         await _next(context);

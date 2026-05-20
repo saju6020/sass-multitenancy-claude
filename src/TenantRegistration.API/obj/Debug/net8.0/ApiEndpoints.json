@@ -285,6 +285,16 @@
         "Name": "Timezone",
         "Type": "System.String",
         "IsRequired": false
+      },
+      {
+        "Name": "AdminEmail",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "AdminPassword",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -314,6 +324,16 @@
       },
       {
         "Name": "Timezone",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "AdminEmail",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "AdminPassword",
         "Type": "System.String",
         "IsRequired": false
       }

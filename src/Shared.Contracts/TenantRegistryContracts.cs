@@ -23,4 +23,10 @@ public record TokenResponseDto(
     string Tenant_Slug,
     IReadOnlyList<string> Roles);
 
-public record CreateTenantDto(string Name, string Slug, string Currency, string Timezone);
+public record CreateTenantDto(
+    string Name,
+    string Slug,
+    string Currency,
+    string Timezone,
+    string AdminEmail,
+    string AdminPassword);

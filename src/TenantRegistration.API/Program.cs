@@ -29,6 +29,7 @@ builder.Services.AddDbContext<PlatformDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<PasswordHasher<PlatformUser>>();
 builder.Services.AddSingleton<TenantDatabaseNameBuilder>();
+builder.Services.AddScoped<LoanProposalTenantDatabaseProvisioner>();
 
 builder.Services.AddAuthentication(options =>
     {
@@ -92,6 +93,8 @@ app.MapPost("/api/platform/tenants", async (
     CreateTenantDto request,
     PlatformDbContext db,
     TenantDatabaseNameBuilder tenantDbNameBuilder,
+    LoanProposalTenantDatabaseProvisioner tenantDatabaseProvisioner,
+    PasswordHasher<PlatformUser> passwordHasher,
     CancellationToken ct) =>
 {
     var slug = NormalizeSlug(request.Slug);
@@ -99,10 +102,23 @@ app.MapPost("/api/platform/tenants", async (
         return Results.BadRequest(new { error = "Slug must contain at least one letter or number." });
     if (await db.Tenants.AnyAsync(t => t.Slug == slug, ct))
         return Results.Conflict(new { error = $"Slug '{slug}' is already taken." });
+    if (string.IsNullOrWhiteSpace(request.AdminEmail) || string.IsNullOrWhiteSpace(request.AdminPassword))
+        return Results.BadRequest(new { error = "Tenant admin email and password are required." });
+
+    var adminEmail = NormalizeEmail(request.AdminEmail);
+    if (await db.PlatformUsers.AnyAsync(u => u.Email == adminEmail, ct))
+        return Results.Conflict(new { error = $"Admin email '{adminEmail}' is already taken." });
 
     var tenant = Tenant.Create(request.Name, slug, request.Currency, request.Timezone);
     tenant.ConfigureDatabase(tenantDbNameBuilder.BuildDatabaseName(slug), tenantDbNameBuilder.BuildConnectionString(slug));
+
+    var tenantAdmin = PlatformUser.Create(tenant.Id, tenant.Slug, adminEmail, $"{tenant.Name} Admin", [RoleNames.TenantAdmin]);
+    tenantAdmin.SetPasswordHash(passwordHasher.HashPassword(tenantAdmin, request.AdminPassword));
+
+    await tenantDatabaseProvisioner.EnsureCreatedAsync(tenant.DatabaseConnectionString, ct);
+
     db.Tenants.Add(tenant);
+    db.PlatformUsers.Add(tenantAdmin);
     await db.SaveChangesAsync(ct);
     return Results.Ok(ToDescriptor(tenant, tenantDbNameBuilder));
 }).RequireAuthorization(RoleNames.PlatformAdmin);
@@ -245,6 +261,8 @@ static string NormalizeSlug(string slug)
     var normalized = Regex.Replace(slug.Trim().ToLowerInvariant(), "[^a-z0-9]+", "-").Trim('-');
     return normalized;
 }
+
+static string NormalizeEmail(string email) => email.Trim().ToLowerInvariant();
 
 static async Task EnsureUserAsync(PlatformDbContext db, PasswordHasher<PlatformUser> passwordHasher, Guid? tenantId, string tenantSlug, string email, string fullName, string[] roles)
 {

@@ -262,6 +262,20 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "AdminEmail",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "AdminPassword",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -363,6 +377,20 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "AdminEmail",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "AdminPassword",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -414,6 +442,14 @@
             "nullable": true
           },
           "timezone": {
+            "type": "string",
+            "nullable": true
+          },
+          "adminEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "adminPassword": {
             "type": "string",
             "nullable": true
           }

@@ -24,6 +24,14 @@
                 <label asp-for="Form.Timezone">Timezone</label>
                 <input asp-for="Form.Timezone" name="Timezone" placeholder="Asia/Dhaka" />
             </div>
+            <div>
+                <label asp-for="Form.AdminEmail">Tenant admin email</label>
+                <input asp-for="Form.AdminEmail" name="AdminEmail" type="email" placeholder="admin@pacific-lending.local" />
+            </div>
+            <div>
+                <label asp-for="Form.AdminPassword">Tenant admin password</label>
+                <input asp-for="Form.AdminPassword" name="AdminPassword" type="password" autocomplete="new-password" />
+            </div>
         </div>
         <div style="margin-top:14px">
             <button class="btn" type="submit">Create tenant</button>

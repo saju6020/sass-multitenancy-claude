@@ -44,4 +44,10 @@ public class TenantDbContextFactory
     }
 
     public AppDbContext CreateDbContext(Tenant tenant) => CreateDbContext(ResolveConnectionString(tenant));
+
+    public async Task EnsureCreatedAsync(string connectionString, CancellationToken ct = default)
+    {
+        await using var db = CreateDbContext(connectionString);
+        await db.Database.EnsureCreatedAsync(ct);
+    }
 }

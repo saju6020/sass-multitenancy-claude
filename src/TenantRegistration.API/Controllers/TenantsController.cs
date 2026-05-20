@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using LoanProposal.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shared.Contracts;
@@ -17,11 +18,19 @@ public class TenantsController : Controller
 {
     private readonly PlatformDbContext _platformDb;
     private readonly TenantDatabaseNameBuilder _tenantDatabaseNameBuilder;
+    private readonly LoanProposalTenantDatabaseProvisioner _tenantDatabaseProvisioner;
+    private readonly PasswordHasher<PlatformUser> _passwordHasher;
 
-    public TenantsController(PlatformDbContext platformDb, TenantDatabaseNameBuilder tenantDatabaseNameBuilder)
+    public TenantsController(
+        PlatformDbContext platformDb,
+        TenantDatabaseNameBuilder tenantDatabaseNameBuilder,
+        LoanProposalTenantDatabaseProvisioner tenantDatabaseProvisioner,
+        PasswordHasher<PlatformUser> passwordHasher)
     {
         _platformDb = platformDb;
         _tenantDatabaseNameBuilder = tenantDatabaseNameBuilder;
+        _tenantDatabaseProvisioner = tenantDatabaseProvisioner;
+        _passwordHasher = passwordHasher;
     }
 
     [HttpGet("")]
@@ -49,7 +58,7 @@ public class TenantsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateTenantForm form, CancellationToken ct)
     {
-        if (!ValidateTenantForm(form)) return RedirectToAction(nameof(Index));
+        if (!ValidateCreateTenantForm(form)) return RedirectToAction(nameof(Index));
 
         var slug = NormalizeSlug(form.Slug);
         if (string.IsNullOrWhiteSpace(slug))
@@ -64,13 +73,26 @@ public class TenantsController : Controller
             return RedirectToAction(nameof(Index));
         }
 
+        var adminEmail = NormalizeEmail(form.AdminEmail);
+        if (await _platformDb.PlatformUsers.AnyAsync(u => u.Email == adminEmail, ct))
+        {
+            TempData["Error"] = $"Admin email '{adminEmail}' is already taken.";
+            return RedirectToAction(nameof(Index));
+        }
+
         var tenant = Tenant.Create(form.Name.Trim(), slug, form.Currency.Trim().ToUpperInvariant(), form.Timezone.Trim());
         tenant.ConfigureDatabase(_tenantDatabaseNameBuilder.BuildDatabaseName(slug), _tenantDatabaseNameBuilder.BuildConnectionString(slug));
 
+        var tenantAdmin = PlatformUser.Create(tenant.Id, tenant.Slug, adminEmail, $"{tenant.Name} Admin", [RoleNames.TenantAdmin]);
+        tenantAdmin.SetPasswordHash(_passwordHasher.HashPassword(tenantAdmin, form.AdminPassword));
+
+        await _tenantDatabaseProvisioner.EnsureCreatedAsync(tenant.DatabaseConnectionString, ct);
+
         _platformDb.Tenants.Add(tenant);
+        _platformDb.PlatformUsers.Add(tenantAdmin);
         await _platformDb.SaveChangesAsync(ct);
 
-        TempData["Success"] = $"Tenant '{tenant.Name}' created with LoanProposal database metadata.";
+        TempData["Success"] = $"Tenant '{tenant.Name}' created with TenantAdmin '{tenantAdmin.Email}'.";
         return RedirectToAction(nameof(Index));
     }
 
@@ -154,8 +176,18 @@ public class TenantsController : Controller
         return false;
     }
 
+    private bool ValidateCreateTenantForm(CreateTenantForm form)
+    {
+        if (!ValidateTenantForm(form)) return false;
+        if (!string.IsNullOrWhiteSpace(form.AdminEmail) && !string.IsNullOrWhiteSpace(form.AdminPassword)) return true;
+        TempData["Error"] = "Tenant admin email and password are required.";
+        return false;
+    }
+
     private static string NormalizeSlug(string slug) =>
         Regex.Replace(slug.Trim().ToLowerInvariant(), "[^a-z0-9]+", "-").Trim('-');
+
+    private static string NormalizeEmail(string email) => email.Trim().ToLowerInvariant();
 
     private static void Set<T>(object target, string propertyName, T value)
     {

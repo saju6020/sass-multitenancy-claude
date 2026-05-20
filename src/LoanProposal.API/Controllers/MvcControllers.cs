@@ -402,7 +402,11 @@ public class ConfigurationController : Controller
     {
         if (!MvcCrudHelpers.CanAccessTenant(User, tenantId)) return null;
         var tenant = await _tenantRegistryClient.GetLoanProposalTenantAsync(tenantId, ct);
-        return tenant is null ? null : _tenantDbFactory.CreateDbContext(tenant.ConnectionString);
+        if (tenant is null) return null;
+
+        var tenantDb = _tenantDbFactory.CreateDbContext(tenant.ConnectionString);
+        await tenantDb.Database.EnsureCreatedAsync(ct);
+        return tenantDb;
     }
 }
 
@@ -619,7 +623,11 @@ public class ApplicationsController : Controller
     {
         if (!MvcCrudHelpers.CanAccessTenant(User, tenantId)) return null;
         var tenant = await _tenantRegistryClient.GetLoanProposalTenantAsync(tenantId, ct);
-        return tenant is null ? null : _tenantDbFactory.CreateDbContext(tenant.ConnectionString);
+        if (tenant is null) return null;
+
+        var tenantDb = _tenantDbFactory.CreateDbContext(tenant.ConnectionString);
+        await tenantDb.Database.EnsureCreatedAsync(ct);
+        return tenantDb;
     }
 }
 

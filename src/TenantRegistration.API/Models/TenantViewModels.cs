@@ -24,6 +24,8 @@ public class CreateTenantForm
     public string Slug { get; set; } = string.Empty;
     public string Currency { get; set; } = "USD";
     public string Timezone { get; set; } = "UTC";
+    public string AdminEmail { get; set; } = string.Empty;
+    public string AdminPassword { get; set; } = string.Empty;
 }
 
 public class TenantEditForm : CreateTenantForm
